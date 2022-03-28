@@ -1,0 +1,264 @@
+julia> N0(x) = 1
+N0 (generic function with 1 method)
+
+julia> N1(x) = 1 + 1*(x-2)
+N1 (generic function with 1 method)
+
+julia> N2(x) = 1 + 1*(x-2) - 2/3 * (x-2)*(x-3)
+N2 (generic function with 1 method)
+
+julia> N3(x) = 1 + 1*(x-2) - 2/3 * (x-2)*(x-3) + 3/10 * (x-2)*(x-3)*(x-5)
+N3 (generic function with 1 method)
+
+julia> N4(x) = 1 + 1*(x-2) - 2/3 * (x-2)*(x-3) + 3/10 * (x-2)*(x-3)*(x-5) - 11/120 * (x-6)
+N4 (generic function with 1 method)
+
+julia> plot([N0,N1,N2,N3,N4],label=["N0" "N1" "N2" "N3" "N4"])
+ERROR: UndefVarError: plot not defined
+Stacktrace:
+ [1] top-level scope
+   @ REPL[6]:1
+
+julia> using Plots
+
+julia> plot([N0,N1,N2,N3,N4],label=["N0" "N1" "N2" "N3" "N4"])
+
+julia> x = range(
+
+range(; start, stop, length, step) in Base at range.jl:114
+range(start::T; stop, length) where T<:Colorant in Colors at C:\Users\JerryYang\.julia\packages\Colors\yDxFN\src\utilities.jl:230
+range(start::T, stop::T; kwargs...) where T<:Colorant in Colors at C:\Users\JerryYang\.julia\packages\Colors\yDxFN\src\utilities.jl:235
+range(start; stop, length, step) in Base at range.jl:109
+range(start, stop; length, step) in Base at range.jl:111
+range(start, stop, length::Integer) in Base at range.jl:112
+julia> x = range(
+
+range(; start, stop, length, step) in Base at range.jl:114
+range(start::T; stop, length) where T<:Colorant in Colors at C:\Users\JerryYang\.julia\packages\Colors\yDxFN\src\utilities.jl:230
+range(start::T, stop::T; kwargs...) where T<:Colorant in Colors at C:\Users\JerryYang\.julia\packages\Colors\yDxFN\src\utilities.jl:235
+range(start; stop, length, step) in Base at range.jl:109
+range(start, stop; length, step) in Base at range.jl:111
+range(start, stop, length::Integer) in Base at range.jl:112
+julia> x = range(start=-1,stop=10,step=100)
+-1:100:-1
+
+julia> x = range(start=-1,stop=10,length=100)
+-1.0:0.1111111111111111:10.0
+
+julia> x = range(start=-1,stop=10,length=500)
+-1.0:0.022044088176352707:10.0
+
+julia> x = range(start=-1,stop=10,length=1000)
+-1.0:0.011011011011011011:10.0
+
+julia> plot(x,[N0,N1,N2,N3,N4],label=["N0" "N1" "N2" "N3" "N4"])
+
+julia> xd = [0,2,3,5,6]
+5-element Vector{Int64}:
+ 0
+ 2
+ 3
+ 5
+ 6
+
+julia> yd = [1,3,2,5,6]
+5-element Vector{Int64}:
+ 1
+ 3
+ 2
+ 5
+ 6
+
+julia> plot!(xd,yd,seriestype=:scatter)
+
+julia> plot(x,[N0,N1,N2,N3,N4],label=["N0" "N1" "N2" "N3" "N4"])
+
+julia> plot!(xd,yd,seriestype=:scatter)
+
+julia> N0(x) = 1 + x
+N0 (generic function with 1 method)
+
+julia> N1(x) = 1 + x + 1*x*(x-2)
+N1 (generic function with 1 method)
+
+julia> N2(x) = 1 + x + 1*x*(x-2) - 2/3 * x * (x-2)*(x-3)
+N2 (generic function with 1 method)
+
+julia> N3(x) = 1 + x + 1*x*(x-2) - 2/3 *x* (x-2)*(x-3) + 3/10 *x * (x-2)*(x-3)*(x-5)
+N3 (generic function with 1 method)
+julia> N4(x) = 1 + x + 1*x*(x-2) - 2/3 *x* (x-2)*(x-3) + 3/10 *x * (x-2)*(x-3)*(x-5) - 11/120 *x *(x-2)*(x-3)*(x-5)*(x-6)
+N4 (generic function with 1 method)
+
+julia> plot(x,[N0,N1,N2,N3,N4],label=["N0" "N1" "N2" "N3" "N4"])
+
+julia> x = range(start=-0.5,stop=6.5,length=1000)
+-0.5:0.007007007007007007:6.5
+
+julia> plot(x,[N0,N1,N2,N3,N4],label=["N0" "N1" "N2" "N3" "N4"])
+
+julia> x = range(start=-0.1,stop=6.1,length=1000)
+-0.1:0.006206206206206206:6.1
+
+julia> plot(x,[N0,N1,N2,N3,N4],label=["N0" "N1" "N2" "N3" "N4"])
+
+julia> plot!(xd,yd,seriestype=:scatter)
+
+julia> N0(x) = 1 + x
+N0 (generic function with 1 method)
+
+julia> N1(x) = 1 + x -2/3 * x*(x-2)
+N1 (generic function with 1 method)
+
+julia> N4(x) = 1 + x -2/3 * x*(x-2) + 3/10 * x *(x-2)*(x-3) - 11/120 *x*(x-2)*(x-3)*(x-5)
+N4 (generic function with 1 method)
+
+julia> N0(x) = 1
+N0 (generic function with 1 method)
+
+julia> N1(x) = 1 + x
+N1 (generic function with 1 method)
+
+julia> N2(x) = 1 + x -2/3 * x*(x-2)
+N2 (generic function with 1 method)
+
+julia> N3(x) = 1 + x -2/3 * x*(x-2) + 3/10 * x *(x-2)*(x-3)
+N3 (generic function with 1 method)
+
+julia> N4(x) = 1 + x -2/3 * x*(x-2) + 3/10 * x *(x-2)*(x-3) - 11/120 *x*(x-2)*(x-3)*(x-5)
+N4 (generic function with 1 method)
+
+julia> plot(x,[N0,N1,N2,N3,N4],label=["N0" "N1" "N2" "N3" "N4"])
+
+julia> plot!(xd,yd,seriestype=:scatter)
+
+julia> plot(xd,yd,seriestype=:scatter)
+
+julia> plot(xd,yd,seriestype=:scatter, color=red)
+ERROR: MethodError: no method matching plot_color(::typeof(red))
+Closest candidates are:
+  plot_color(::Any, ::Number) at C:\Users\JerryYang\.julia\packages\PlotUtils\jNTYY\src\colors.jl:23
+  plot_color(::Any, ::Nothing) at C:\Users\JerryYang\.julia\packages\PlotUtils\jNTYY\src\colors.jl:20
+  plot_color(::AbstractArray{T}) where T<:Number at C:\Users\JerryYang\.julia\packages\PlotUtils\jNTYY\src\colors.jl:54
+  ...
+Stacktrace:
+ [1] get_series_color(c::Function, sp::Plots.Subplot{Plots.GRBackend}, n::Int64, seriestype::Symbol)
+   @ Plots C:\Users\JerryYang\.julia\packages\Plots\tXtrW\src\args.jl:2101
+ [2] _update_series_attributes!(plotattributes::RecipesPipeline.DefaultsDict, plt::Plots.Plot{Plots.GRBackend}, sp::Plots.Subplot{Plots.GRBackend})
+   @ Plots C:\Users\JerryYang\.julia\packages\Plots\tXtrW\src\args.jl:2186
+ [3] add_series!(plt::Plots.Plot{Plots.GRBackend}, plotattributes::RecipesPipeline.DefaultsDict)
+   @ Plots C:\Users\JerryYang\.julia\packages\Plots\tXtrW\src\pipeline.jl:342
+ [4] _process_seriesrecipe(plt::Any, plotattributes::Any)
+   @ RecipesPipeline C:\Users\JerryYang\.julia\packages\RecipesPipeline\F2mWY\src\series_recipe.jl:46
+ [5] _process_seriesrecipes!(plt::Any, kw_list::Any)
+   @ RecipesPipeline C:\Users\JerryYang\.julia\packages\RecipesPipeline\F2mWY\src\series_recipe.jl:27
+ [6] recipe_pipeline!(plt::Any, plotattributes::Any, args::Any)
+   @ RecipesPipeline C:\Users\JerryYang\.julia\packages\RecipesPipeline\F2mWY\src\RecipesPipeline.jl:97
+ [7] _plot!(plt::Plots.Plot, plotattributes::Any, args::Any)
+   @ Plots C:\Users\JerryYang\.julia\packages\Plots\tXtrW\src\plot.jl:208
+ [8] #plot#135
+   @ C:\Users\JerryYang\.julia\packages\Plots\tXtrW\src\plot.jl:91 [inlined]
+ [9] top-level scope
+   @ REPL[41]:1
+
+julia> plot(xd,yd,seriestype=:scatter, color="red")
+
+julia> plot(xd,yd,seriestype=:scatter, color="red",size="s")
+Error showing value of type Plots.Plot{Plots.GRBackend}:
+ERROR: BoundsError: attempt to access 1-codeunit String at index [2]
+Stacktrace:
+  [1] indexed_iterate(I::String, i::Int64, state::Int64)
+    @ Base .\tuple.jl:98
+  [2] prepare_output(plt::Plots.Plot{Plots.GRBackend})
+    @ Plots C:\Users\JerryYang\.julia\packages\Plots\tXtrW\src\plot.jl:219
+  [3] display(#unused#::Plots.PlotsDisplay, plt::Plots.Plot{Plots.GRBackend})
+    @ Plots C:\Users\JerryYang\.julia\packages\Plots\tXtrW\src\output.jl:138
+  [4] display(x::Any)
+    @ Base.Multimedia .\multimedia.jl:328
+  [5] #invokelatest#2
+    @ .\essentials.jl:716 [inlined]
+  [6] invokelatest
+    @ .\essentials.jl:714 [inlined]
+  [7] print_response(errio::IO, response::Any, show_value::Bool, have_color::Bool, specialdisplay::Union{Nothing, AbstractDisplay})
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:293
+  [8] (::REPL.var"#45#46"{REPL.LineEditREPL, Pair{Any, Bool}, Bool, Bool})(io::Any)
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:277
+  [9] with_repl_linfo(f::Any, repl::REPL.LineEditREPL)
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:510
+ [10] print_response(repl::REPL.AbstractREPL, response::Any, show_value::Bool, have_color::Bool)
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:275
+ [11] (::REPL.var"#do_respond#66"{Bool, Bool, REPL.var"#77#87"{REPL.LineEditREPL, REPL.REPLHistoryProvider}, REPL.LineEditREPL, REPL.LineEdit.Prompt})(s::REPL.LineEdit.MIState, buf::Any, ok::Bool)
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:846
+ [12] #invokelatest#2
+    @ .\essentials.jl:716 [inlined]
+ [13] invokelatest
+    @ .\essentials.jl:714 [inlined]
+ [14] run_interface(terminal::REPL.Terminals.TextTerminal, m::REPL.LineEdit.ModalInterface, s::REPL.LineEdit.MIState)
+    @ REPL.LineEdit D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\LineEdit.jl:2493
+ [15] run_frontend(repl::REPL.LineEditREPL, backend::REPL.REPLBackendRef)
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:1232
+ [16] (::REPL.var"#49#54"{REPL.LineEditREPL, REPL.REPLBackendRef})()
+    @ REPL .\task.jl:423
+
+julia> plot(xd,yd,seriestype=:scatter, color="red",size=1)
+Error showing value of type Plots.Plot{Plots.GRBackend}:
+ERROR: BoundsError: attempt to access Int64 at index [2]
+Stacktrace:
+  [1] indexed_iterate(I::Int64, i::Int64, state::Nothing)
+    @ Base .\tuple.jl:98
+  [2] prepare_output(plt::Plots.Plot{Plots.GRBackend})
+    @ Plots C:\Users\JerryYang\.julia\packages\Plots\tXtrW\src\plot.jl:219
+  [3] display(#unused#::Plots.PlotsDisplay, plt::Plots.Plot{Plots.GRBackend})
+    @ Plots C:\Users\JerryYang\.julia\packages\Plots\tXtrW\src\output.jl:138
+  [4] display(x::Any)
+    @ Base.Multimedia .\multimedia.jl:328
+  [5] #invokelatest#2
+    @ .\essentials.jl:716 [inlined]
+  [6] invokelatest
+    @ .\essentials.jl:714 [inlined]
+  [7] print_response(errio::IO, response::Any, show_value::Bool, have_color::Bool, specialdisplay::Union{Nothing, AbstractDisplay})
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:293
+  [8] (::REPL.var"#45#46"{REPL.LineEditREPL, Pair{Any, Bool}, Bool, Bool})(io::Any)
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:277
+  [9] with_repl_linfo(f::Any, repl::REPL.LineEditREPL)
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:510
+ [10] print_response(repl::REPL.AbstractREPL, response::Any, show_value::Bool, have_color::Bool)
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:275
+ [11] (::REPL.var"#do_respond#66"{Bool, Bool, REPL.var"#77#87"{REPL.LineEditREPL, REPL.REPLHistoryProvider}, REPL.LineEditREPL, REPL.LineEdit.Prompt})(s::REPL.LineEdit.MIState, buf::Any, ok::Bool)
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:846
+ [12] #invokelatest#2
+    @ .\essentials.jl:716 [inlined]
+ [13] invokelatest
+    @ .\essentials.jl:714 [inlined]
+ [14] run_interface(terminal::REPL.Terminals.TextTerminal, m::REPL.LineEdit.ModalInterface, s::REPL.LineEdit.MIState)
+    @ REPL.LineEdit D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\LineEdit.jl:2493
+ [15] run_frontend(repl::REPL.LineEditREPL, backend::REPL.REPLBackendRef)
+    @ REPL D:\ProgLangToolkit\julia\julia-1.7.2\share\julia\stdlib\v1.7\REPL\src\REPL.jl:1232
+ [16] (::REPL.var"#49#54"{REPL.LineEditREPL, REPL.REPLBackendRef})()
+    @ REPL .\task.jl:423
+
+julia> plot(xd,yd,seriestype=:scatter, color="red",markersize = 10)
+
+julia> plot(xd,yd,seriestype=:scatter, color="red",markersize = 1)
+
+julia> plot(xd,yd,seriestype=:scatter, color="red",markersize = 2)
+
+julia> plot(xd,yd,seriestype=:scatter, color="red",markersize = 3)
+
+julia> plot(xd,yd,seriestype=:scatter, color="red",markersize = 4)
+
+julia> plot(xd,yd,seriestype=:scatter, color="red",markersize = 3)
+
+julia> plot(xd,yd,seriestype=:scatter, color="red",markersize = 2)
+
+julia> plot(x,[N0,N1,N2,N3,N4],label=["N0" "N1" "N2" "N3" "N4"]
+       )
+
+julia> plot!(xd,yd,seriestype=:scatter, color="red",markersize = 3)
+
+julia> plot!(xd,yd,seriestype=:scatter, color="red",markersize = 2)
+
+julia> plot(x,[N0,N1,N2,N3,N4],label=["N0" "N1" "N2" "N3" "N4"])
+
+julia> plot!(xd,yd,seriestype=:scatter, color="red",markersize = 2)
+
+julia>
