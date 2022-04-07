@@ -8,7 +8,7 @@
 
 实验的目的即为使用拉格朗日插值法求解函数的近似值。
 
-该实验报告主要分为6个部分，大纲罗列如下:
+该实验报告主要分为7个部分，大纲罗列如下:
 
 - 实验简介：即本部分的所有内容
 - **数学原理**：对拉格朗日插值算法的数学原理进行阐述
@@ -22,7 +22,7 @@
   - **问题2**：探究插值的区间长度选取和待插值函数的关系，从两个不同的函数对于不同阶数插值、在不同的区间长度下插值对于拟合结果的影响，理解进行插值时选取合适的插值区间来达到期望的拟合精度和对计算资源的节省，是基于对函数本身特点的认识的
   - **问题4**：探究插值外推和内插的相对可靠性，从直觉上很容易意识到内插是比外推可靠的，但这一未经数学证明的结论需要更深入的数学知识，我们通过对部分实例进行探索，从实例呈现的插值结果来看，这一结论成立的条件是基于函数的性质的。
 - **思考题**：本部分为实验指导书中所要求的完成的思考题解答
-  
+- 参考资料：本次实验过程中查阅的参考资料
 
 
 
@@ -63,8 +63,6 @@ $$
 综上所述,当$n$次多项式$l_j\left( x \right) \left( j=0,1,2,\cdots ,n \right) $由$\left(**\right($方程确定时,$n$次多项式满足插值条件式.可以证明,这样的多项式是唯一的.
 
 我们称式$\left(*\right)$为Lagrange插值公式,  $\left(**\right)$为Lagrange插值多项式,记为$L_n(x)$.
-
-
 
 ### 代码实现
 
@@ -217,27 +215,27 @@ pretty_table(
 
 接着，以下测试是为了选用更高效率代码而进行的，用大数组对代码的性能进行评判。
 
-这里由于已经经过了测试，并且本部分运行耗时长，将代码注释但不删除用以存档。
+这里由于已经经过了测试，并且本部分运行耗时长，在`Jupyter Notebook`中将代码注释但不删除用以存档。
 
 
 ```julia
-# xs = [i for i in -10:0.1:10]
-# ys = [i^2 for i in -10:0.1:10]
-# test_x1 = [i for i in -1000:0.01:100]
-# display(@time xs, ys = lagrange(xs, ys, test_x1))
-# xs = [i for i in -10:0.1:10]
-# ys = [i^3 for i in -10:0.1:10]
-# test_x1 = [i for i in -1000:0.01:100]
-# display(@time xs, ys = lagrange(xs, ys, test_x1))
-# xs = [i for i in -10:0.1:10]
-# ys = [i^4 for i in -10:0.1:10]
-# test_x1 = [i for i in -1000:0.01:100]
-# display(@time xs, ys = lagrange(xs, ys, test_x1))
-# xs = [i for i in -10:0.1:10]
-# ys = [i^5 for i in -10:0.1:10]
-# test_x1 = [i for i in -1000:0.01:100]
-# display(@time xs, ys = lagrange(xs, ys, test_x1))
-# # display(plot(xs, ys, seriestype=:scatter, markersize=1,msw=0,legend=:outertopright))
+xs = [i for i in -10:0.1:10]
+ys = [i^2 for i in -10:0.1:10]
+test_x1 = [i for i in -1000:0.01:100]
+display(@time xs, ys = lagrange(xs, ys, test_x1))
+xs = [i for i in -10:0.1:10]
+ys = [i^3 for i in -10:0.1:10]
+test_x1 = [i for i in -1000:0.01:100]
+display(@time xs, ys = lagrange(xs, ys, test_x1))
+xs = [i for i in -10:0.1:10]
+ys = [i^4 for i in -10:0.1:10]
+test_x1 = [i for i in -1000:0.01:100]
+display(@time xs, ys = lagrange(xs, ys, test_x1))
+xs = [i for i in -10:0.1:10]
+ys = [i^5 for i in -10:0.1:10]
+test_x1 = [i for i in -1000:0.01:100]
+display(@time xs, ys = lagrange(xs, ys, test_x1))
+# display(plot(xs, ys, seriestype=:scatter, markersize=1,msw=0,legend=:outertopright))
 ```
 
 before code changes:
