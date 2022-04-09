@@ -12,17 +12,17 @@
 
 该实验报告主要分为7个部分，大纲罗列如下：
 
-- 实验简介：即本部分的所有内容
+- **实验简介**：即本部分的所有内容
 - **数学原理**：即常微分方程初值问题的数学定义，和对Runge-Kutta方法的基本数学原理进行阐述
 - **代码实现**：使用`Julia`语言，根据数学原理，编写实验代码
-- 测试代码：对程序的运行、输出进行测试的部分
+- **测试代码**：对程序的运行、输出进行测试的部分
   - Test 1 - Simple：使用教材上的例题对程序的正确性进行简单的测试，确保所写代码能完成实验任务。
 - **实验题目**：实验指导书中所要求的完成的实验题目，作有便于对照使用Runge-Kutta方法的`lib solver`和`my solver`与真实结果`true result`的曲线图，各题目均同时使用`lib solver`和`my solver`进行求解，熟悉了`Julia`库`DifferentcialEquations`求解`ODE`问题的使用流程。
   - **执行代码**：本部分是实验代码进行运行时封装的部分，将函数的调用细节隐藏在`show_result()`函数内部，便于直接从外部使用特定参数对函数进行调用。
   - **问题1**：探究数值解法与解析解的关系，通过对于解为线性函数和非线性函数的常微分方程的数值求解，体会求出的数值解用于反推解析解的困难程度。
   - **问题2**&**问题3**：探究n的大小对于求解精度的影响，首先是问题2变化的n对于求解精度的影响几乎可以不计，很容易求得精度较高的解，而在求解问题3时过小的n却根本无法对方程进行求解。这一定程度上说明了，求解的精度和n的选取很大程度上依赖于方程本身的性质。
 - **思考题**：本部分为实验指导书中所要求的完成的思考题解答
-- 参考资料：本部分为完成实验过程中查阅的参考资料
+- **参考资料**：本部分为完成实验过程中查阅的参考资料
 
 ### 数学原理
 
@@ -113,8 +113,6 @@ plot(title=L"~~~~~~~~~~~~ Problem:\ \frac{\mathrm{d} y}{\mathrm{d} x}=y-\frac{2x
 plot!(sol.t, sol.u, seriestype=:scatter, markersize=3, msw=0, color=:red, label="lib solver")
 
 f(x, y) = y - 2x / y
-# xspan = (0.0, 1.0)
-# y0 = 1.0
 println("My Runge-Kutta Solver:")
 num = convert(Integer, 1.0 / 0.2)
 xs, ys = rungekutta(f, xspan, y0, 5)
@@ -126,10 +124,9 @@ pretty_table(
     alignment=[:c, :c, :c],
     header=header,
     header_crayon=crayon"bold",
-    # tf = tf_markdown,
     formatters=ft_printf("%14.8f"))
 p = plot!(xs, ys, seriestype=:scatter, markersize=5, msw=0, color=:green, label="my solver")
-# display(p)
+
 f(x, y) = y^2 - 2x - 1
 p = plot!(f ⩵ 0.0, color=:green, linewidth=0.1, label="true result")  # \Equal[Tab]
 p = plot!(legend=:outertopright, xlim=(-0.51, 1.53), ylim=(-1.9, 1.9))
@@ -217,8 +214,6 @@ function show_result(f1::Function, f2::Function, f3::Function, xspan, y0, iternu
 end
 ```
 
-
-
 #### 问题 1
 
 ##### 1.1
@@ -236,7 +231,7 @@ f2(x, y) = x + y       # my rungekutta() solver
 f3(x) = -x - 1         # true result 
 title = L"Problem\ 1.1: \frac{\mathrm{d} y}{\mathrm{d} x} = x + y"
 text = L"y = -x - 1"
-show_result(f1, f2, f3, xspan, y0, iternums, true, true, title, text) # show=true, dense=true
+show_result(f1, f2, f3, xspan, y0, iternums, true, true, title, text) # show, dense
 ```
 
 <center>
@@ -315,7 +310,7 @@ f2(x, y) = -y^2
 f3(x) = 1 / (x + 1)
 title = L"Problem\ 1.2: \frac{\mathrm{d} y}{\mathrm{d} x} = -y^2"
 text = L"y = \frac{1}{x + 1}"
-show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show=true, dense=true
+show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show, dense
 ```
 
 <center>
@@ -324,6 +319,8 @@ show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show=tr
         <img src="output_20_2.svg" style="zoom: 57%"/>
     </figure>
 </center>
+
+
 ```
 Iternum: 5
 ┌────────────────┬────────────────┬────────────────┐
@@ -398,7 +395,7 @@ f2(x, y) = 2 * y / x + x^2 * exp(x)
 f3(x) = x^2 * (exp(x) - exp(1))
 title = L"Problem\ 2.1:\frac{\mathrm{d} y}{\mathrm{d} x}=\frac{2y}{x}+x^2 e^x"
 text = L"y=x^2(e^x - e)"
-show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show=true, dense=true
+show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show, dense
 ```
 
 
@@ -483,7 +480,7 @@ f2(x, y) = (y^2 + y) / x
 f3(x) = 2x / (1 - 2x)
 title = L"Problem\ 2.2:\frac{\mathrm{d} y}{\mathrm{d} x}=\frac{1}{x}(y^2+y)"
 text = L"y=\frac{2x}{1-2x}"
-show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show=true, dense=true
+show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show, dense
 ```
 
 
@@ -572,7 +569,7 @@ f2(x, y) = -20(y - x^2) + 2x
 f3(x) = x^2 + 1 / 3 * exp(-20x)
 title = L"Problem\ 3.1: \frac{\mathrm{d} y}{\mathrm{d} x}=-20(y-x^2)+2x"
 text = L"y=x^2+\frac{1}{3}e^{-20x}"
-show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show=true, dense=true
+show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show, dense
 ```
 
 <center>
@@ -665,7 +662,7 @@ f2(x, y) = -20y + 20sin(x) + cos(x)
 f3(x) = exp(-20x) + sin(x)
 title = L"Problem\ 3.2: \frac{\mathrm{d} y}{\mathrm{d} x}=-20y+20\sin(x)+\cos(x)"
 text =  L"y=e^{-20x}+\sin(x)"
-show_result(f1, f2, f3, xspan, y0, iternums, true, false, title ,text) # show=true, dense=true
+show_result(f1, f2, f3, xspan, y0, iternums, true, false, title ,text) # show, dense
 ```
 
 
@@ -762,7 +759,7 @@ f2(x, y) = -20(y - exp(x)sin(x)) + exp(x) * (sin(x) + cos(x))
 f3(x) = exp(x) * sin(x)
 title = L"Problem\ 3.3: \frac{\mathrm{d} y}{\mathrm{d} x}=-20(y-e^x \sin(x))+e^x (\sin(x) + \cos(x))"
 text = L"y=e^x \sin(x)"
-show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show=true, dense=true
+show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show, dense
 ```
 
 

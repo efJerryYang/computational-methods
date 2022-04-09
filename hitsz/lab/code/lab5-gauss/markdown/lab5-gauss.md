@@ -10,18 +10,18 @@
 
 该实验报告主要分为7个部分，大纲罗列如下：
 
-- 实验简介：即本部分的所有内容
+- **实验简介**：即本部分的所有内容
 - **数学原理**：即高斯列主元消元法的数学问题定义和求解公式
 - **代码实现**：使用`Julia`语言，根据数学原理，编写实验代码
-- 测试代码：对于程序基本的正确性、性能的测试代码
+- **测试代码**：对于程序基本的正确性、性能的测试代码
   - Test 1 - Correctnesss：使用随机生成的高阶矩阵对程序的正确性进行基本的检验，使用`lib solver`与编写的高斯消元结果向量之差的范数来衡量结果的精确程度。
   - Test 2 - Performance：首先是对各算法求解高阶线性方程组的时间消耗进行统计，然后绘制出方程组求解时间随矩阵阶数变化的折线图，注意横坐标并非阶数而是样本序号，样本从1阶矩阵到4000阶矩阵，每两个连续样本阶数之差为5。
 - **实验题目**：实验指导书中所要求的求解的线性方程组，以矩阵形式给出，各题目均将输入矩阵打印到控制台以便于观察，这之后同时提供`lib solver`和`my gauss solver`的解，二者结果精确到小数点后6位完全一致，说明求解正确。
   - **执行代码**：本部分是实验代码进行运行时封装的部分，将函数的调用细节隐藏在show_result()函数内部，便于直接从外部使用特定参数对函数进行调用。
   - **问题1**：此题结果实验指导书中已给出，均为`[1, 1, 1, 1]`，用于对算法正确性进行检查。
   - **问题2**：此题为线性方程组求解的问题，直接调用写好的求解函数`gauss()`即可。
-- 总结：因无思考题，此处对于本实验代码进行简单的总结，当前问题和后续的优化方向。
-- 参考资料：本次实验过程中查阅的参考资料
+- **总结**：无思考题，此处对于本实验代码进行简单的总结，当前问题和后续的优化方向。
+- **参考资料**：本次实验过程中查阅的参考资料
 
 
 
@@ -67,8 +67,6 @@ $$
 $$
 然后完成代码编写即可。
 
-
-
 ### 代码实现
 
 首先导入所需要的包，`LinearAlgebra.jl`是使用线性代数工具的标准库，包含矩阵特征值求解，矩阵求逆，解线性方程组等内置函数，本例中用运算符`\`求解线性方程组。
@@ -99,7 +97,7 @@ end
 ```julia
 function pivoting!(A::Matrix{Float64}, k::Integer, n::Integer)
     val, idx = findmax(A[k:n, k])
-    idx += k - 1  # index must add previous length that omitted by slice operator
+    idx += k - 1  # index must add length omitted by slice
     return val, idx
 end
 function pivoting!(A::Matrix{Float64}, b::Vector{Float64}, k::Integer, n::Integer, implicit::Bool)
@@ -115,7 +113,7 @@ function pivoting!(A::Matrix{Float64}, b::Vector{Float64}, k::Integer, n::Intege
         b[k:n] = b[k:n] ./ s
         val, idx = findmax(A[k:n, k])
     end
-    idx += k - 1  # index must add previous length that omitted by slice operator
+    idx += k - 1  # index must add length omitted by slice
     return val, idx
 end
 ```
@@ -196,10 +194,7 @@ function gauss(n, A::Matrix{Float64}, b::Vector{Float64}, implicit::Bool)
     end
     x
 end
-
 ```
-
-
 
 ### 测试代码
 
@@ -212,12 +207,11 @@ end
 使用的范数为2范数，计算范数的库函数为`norm()`，从计算结果来看，绝对误差大约在1e-10~1e-13数量级，可以认为结果相当的精确。
 
 ```julia
-# test random result of standard library 
-# test pass
+# random test
 for i in 1:5
     M = rand(500, 500)
     v = rand(500)
-    A, b = copy(M), copy(v)  # ? Todo: move this line into try block will extend compilation time
+    A, b = copy(M), copy(v)
     try
         # default gauss
         @printf("[vector norm] absolute error: %10.6e\n", norm(A \ b - gauss(size(A, 1), A, b), 2))
@@ -232,7 +226,6 @@ for i in 1:5
     end
     println()
 end
-
 ```
 
 
@@ -258,8 +251,6 @@ end
     [vector norm] absolute error: 2.105902e-11
 ```
 
-   
-
 #### Test 2 - Performance 
 
 首先是对各算法求解500阶线性方程组的时间消耗进行统计，初步得出求解效率的比较结果。然后绘制出方程组求解时间随矩阵阶数变化的折线图，注意横坐标并非阶数而是样本序号，样本从1阶矩阵到4000阶矩阵，每两个连续样本阶数之差为5。
@@ -270,8 +261,7 @@ end
 
 
 ```julia
-# test random result of standard library 
-# test pass
+# random test
 for i in 1:5
     M = rand(500, 500)
     v = rand(500)
@@ -557,6 +547,7 @@ show_result(A, b)
     │  1.00000000 │
     │  1.00000000 │
     └             ┘
+
 
 
 #### 问题 2
