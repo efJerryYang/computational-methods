@@ -12,13 +12,22 @@
 
 ## Todo
 
-- [X] 完成各实验代码
-- [X] 完成各实验report
+- [x] 完成各实验代码
+
+- [x] 完成各实验report
+
 - [ ] 使用`juliawin`设置清华源，命令汇总到`.bat`文件中
-- [ ] 抽取最低限度需要演示的实验代码，保存到`labx-xxx.jl`文件
+
+- [x] 抽取最低限度需要演示的实验代码，保存到`labx-xxx.jl`文件
+
+  > 使用`Pluto.jl`过程中遇到问题，是本身`Pluto.jl`设计所决定的，无法完全取代`Jupyter`功能，详见[这里](https://github.com/fonsp/Pluto.jl/wiki/%E2%9A%A1-Writing-and-running-code)
+
 - [ ] 编写控制演示流程的`demo.bat`文件
+
 - [ ] 在多台机器上测试运行结果
+
 - [ ] (可选)使用`PackageCompiler.jl`打包二进制文件，或者预编译以避免可能需要联网的`precompile`过程
+
 - [ ] 7月初 在写小学期实验间完成mit数值分析课程学习及其实验
 
 ## 声明
