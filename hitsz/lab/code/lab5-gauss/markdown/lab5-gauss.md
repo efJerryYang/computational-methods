@@ -724,5 +724,5 @@ show_result(A, b)
 7. julia repeat method https://www.geeksforgeeks.org/creating-array-with-repeated-elements-in-julia-repeat-method/
 8. julia repeat usage http://www.jlhub.com/julia/manual/en/function/repeat
 9. moving average https://stackoverflow.com/questions/12636613/how-to-calculate-moving-average-without-keeping-the-count-and-data-total
-9. 《数值分析原理》吴勃英 46-48
-10. 《计算方法实验指导》实验题目 5 高斯(Gauss)列主元消去法
+10. 《数值分析原理》吴勃英 46-48
+11. 《计算方法实验指导》实验题目 5 高斯(Gauss)列主元消去法
