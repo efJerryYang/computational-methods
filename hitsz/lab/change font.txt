@@ -1,0 +1,23 @@
+https://stackoverflow.com/questions/24904153/cmd-character-font-size/24905911#24905911
+
+@echo off
+
+    setlocal enableextensions disabledelayedexpansion
+
+    set "consoleName=testing"
+
+    :: http://technet.microsoft.com/en-us/library/cc978570.aspx
+    (   reg add "HKCU\Console\%consoleName%" /f 
+        reg add "HKCU\Console\%consoleName%" /f /v "FaceName"         /t "REG_SZ"     /d "Consolas"
+        reg add "HKCU\Console\%consoleName%" /f /v "FontFamily"       /t "REG_DWORD"  /d 0x00000036
+        reg add "HKCU\Console\%consoleName%" /f /v "FontSize"         /t "REG_DWORD"  /d 0x00080004
+        reg add "HKCU\Console\%consoleName%" /f /v "FontWeight"       /t "REG_DWORD"  /d 0x00000000
+        reg add "HKCU\Console\%consoleName%" /f /v "QuickEdit"        /t "REG_DWORD"  /d 0x00000000
+        reg add "HKCU\Console\%consoleName%" /f /v "ScreenBufferSize" /t "REG_DWORD"  /d 0x00200040
+        reg add "HKCU\Console\%consoleName%" /f /v "WindowSize"       /t "REG_DWORD"  /d 0x00200040
+    ) > nul
+
+    start "%consoleName%" cmd.exe
+
+
+font family https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-2000-server/cc959638(v=technet.10)
