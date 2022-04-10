@@ -2,6 +2,24 @@
 chcp 65001
 title Lab Demo: Computational Method
 echo:
+echo      Welcome! This is Lab Demo: Computational Method, which aims at presenting a demo for labs source code.  
+@REM echo  This repo is licensed with GNU GENERAL PUBLIC LICENSE Version 3, using for commercial purposes is not allowed.
+echo:
+echo      Copyright (C) 2022  Jerry Yang 
+echo:
+echo      This program is free software: you can redistribute it and/or modify it under the terms of the GNU General 
+echo      Public License as published by the Free Software Foundation, either version 3 of the License, or (at your 
+echo      option) any later version.
+echo:
+echo      This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the 
+echo      implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+echo      for more details.
+echo:
+echo      You should have received a copy of the GNU General Public License along with this program. If not, 
+echo      see https://www.gnu.org/licenses/.
+echo:
+echo      If you have any question related to the program, please contact me via email efjerryyang@outlook.com.
+echo:
 echo Press any key to continue...
 pause > nul
 
@@ -69,6 +87,7 @@ goto exit_info
 
 
 :start_fail
+echo:
 echo 错误! 无法启动程序 julia.exe.
 @REM echo ERROR! Fail to start julia.exe.
 echo:
