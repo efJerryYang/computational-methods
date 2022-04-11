@@ -23,5 +23,5 @@ docs/site/
 # environment.
 Manifest.toml
 hitsz/lab/pkg.zip
-hitsz/lab/pkg/
+# hitsz/lab/pkg/
 hitsz/trash/
