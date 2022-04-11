@@ -22,7 +22,7 @@
 
   > 使用`Pluto.jl`过程中遇到问题，是本身`Pluto.jl`设计所决定的，无法完全取代`Jupyter`功能，详见[这里](https://github.com/fonsp/Pluto.jl/wiki/%E2%9A%A1-Writing-and-running-code)
 
-- [ ] 编写控制演示流程的`demo.bat`文件
+- [x] 编写控制演示流程的`demo.bat`文件
 
 - [ ] 在多台机器上测试运行结果
 

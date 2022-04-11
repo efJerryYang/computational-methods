@@ -1,127 +1,25 @@
 @echo off
-chcp 65001
-title Lab Demo: Computational Method
-echo:
-echo      Welcome! This is Lab Demo: Computational Method, which aims at presenting a demo for labs source code.  
-@REM echo  This repo is licensed with GNU GENERAL PUBLIC LICENSE Version 3, using for commercial purposes is not allowed.
-echo:
-echo      Copyright (C) 2022  Jerry Yang 
-echo:
-echo      This program is free software: you can redistribute it and/or modify it under the terms of the GNU General 
-echo      Public License as published by the Free Software Foundation, either version 3 of the License, or (at your 
-echo      option) any later version.
-echo:
-echo      This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the 
-echo      implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
-echo      for more details.
-echo:
-echo      You should have received a copy of the GNU General Public License along with this program. If not, 
-echo      see https://www.gnu.org/licenses/.
-echo:
-echo      If you have any question related to the program, please contact me via email efjerryyang@outlook.com.
-echo:
-echo Press any key to continue...
-pause > nul
+if "%1" == "h" goto begin
+mshta vbscript:createobject("wscript.shell").run("""%~nx0"" h",0)(window.close)&&exit
+:begin
+@echo off
 
-set juliapath=%~dp0pkg\bin\julia.exe
+    setlocal enableextensions disabledelayedexpansion
 
-if exist %juliapath% ( goto menu ) else ( goto start_fail )
+    set "consoleName=testing"
 
-:exit_info
-echo:
-echo If some characters cannot be displayed correctly, please make sure the terminal encoding is UTF-8.
-echo:
-echo That means you should see "Active code page: 65001" at the entry of this terminal.
-echo:
-echo Press any key to continue...
-pause > nul
-goto end
+    :: http://technet.microsoft.com/en-us/library/cc978570.aspx
+    (   reg add "HKCU\Console\%consoleName%" /f 
+        reg add "HKCU\Console\%consoleName%" /f /v "FaceName"                /t "REG_SZ"     /d "Consolas"
+        reg add "HKCU\Console\%consoleName%" /f /v "FontFamily"              /t "REG_DWORD"  /d 0x00000036
+        reg add "HKCU\Console\%consoleName%" /f /v "FontSize"                /t "REG_DWORD"  /d 0x00120008
+        reg add "HKCU\Console\%consoleName%" /f /v "FontWeight"              /t "REG_DWORD"  /d 0x00000001
+        reg add "HKCU\Console\%consoleName%" /f /v "QuickEdit"               /t "REG_DWORD"  /d 0x00000000
+        reg add "HKCU\Console\%consoleName%" /f /v "ScreenBufferSize"        /t "REG_DWORD"  /d 0x07d00050
+        reg add "HKCU\Console\%consoleName%" /f /v "HistoryBufferSize"       /t "REG_DWORD"  /d 0x00000999
+        reg add "HKCU\Console\%consoleName%" /f /v "NumberOfHistoryBuffers"  /t "REG_DWORD"  /d 0x00000005
+        reg add "HKCU\Console\%consoleName%" /f /v "WindowSize"              /t "REG_DWORD"  /d 0x00200040
+        reg add "HKCU\Console\%consoleName%" /f /v "FullScreen"              /t "REG_DWORD"  /d 0x00000001
+    ) > nul
 
-:menu
-echo:
-echo 请根据提示输入数字, 运行相应实验代码或退出
-echo:
-echo   1. Lagrange
-echo   2. Romberg
-echo   3. Runge-Kutta
-echo   4. Newton
-echo   5. Gauss
-echo   0. Exit
-echo:
-set num=-1
-set /p num=请输入数字:
-if %num%==1 ( 
-    echo:
-    echo Lab %num%: Lagrange
-    goto lagrange
-) else if %num%==2 (
-    echo:
-    echo Lab %num%: Romberg
-    goto romberg
-) else if %num%==3 ( 
-    echo:
-    echo Lab %num%: Runge-Kutta
-    goto runge_kutta
-) else if %num%==4 (
-    echo:
-    echo Lab %num%: Newton
-    goto newton
-) else if %num%==5 ( 
-    echo:
-    echo Lab %num%: Gauss
-    goto gauss
-) else if %num%==0 (
-    goto exit_info
-) else (
-    echo:
-    echo 请输入有效的数字重试.
-    goto menu
-)
-
-@REM echo 解释代码需要一些时间...
-@REM echo It really takes time to run the program...
-@REM echo:
-@REM call %juliapath% %~dp0labs\lab2.jl
-@REM call %juliapath%
-goto exit_info
-
-
-:start_fail
-echo:
-echo 错误! 无法启动程序 julia.exe.
-@REM echo ERROR! Fail to start julia.exe.
-echo:
-if exist %~dp0pkg ( 
-    echo 文件夹 pkg 存在, 为便于重新安装请将其所有子目录移除.
-    @REM echo Folder pkg exists, please remove it and all its subdirectories.
-) else (
-    echo 文件夹 pkg 不存在.
-    @REM echo Folder pkg not exists.
-)
-echo:
-echo 请将 pkg.zip 解压到 .\pkg 目录下, 并确保文件夹 pkg 没有出现冗余的嵌套.
-echo:
-echo 当前的工作目录树形结构如下:
-echo:
-type .\etc\folder.txt
-echo:
-echo:
-echo 如果有需要, 请在 .\etc\file.txt 中获取更多有关依赖的信息.
-goto exit_info
-
-:lagrange
-goto menu
-
-:romberg
-goto menu
-
-:runge_kutta
-goto menu
-
-:newton
-goto menu
-
-:gauss
-goto menu
-
-:end
+    start "%consoleName%" /max %~dp0src\julia-caller.bat
