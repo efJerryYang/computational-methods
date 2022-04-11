@@ -114,7 +114,7 @@ goto install
 
 :install
 echo    Installing Julia Packages...
-    set JULIA_PKG_SERVER=mirrors.tuna.tsinghua.edu.cn/julia
+set JULIA_PKG_SERVER=mirrors.tuna.tsinghua.edu.cn/julia
 call %juliapath% %~dp0julia\install-pkg.jl
 call %juliapath% %~dp0julia\build-pkg.jl
 goto menu
@@ -240,7 +240,7 @@ chcp 65001
 goto menu
 
 :romberg
-julia %~dp0julia\lab2-romberg.jl
+call %juliapath% %~dp0julia\lab2-romberg.jl
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -248,7 +248,7 @@ chcp 65001
 goto menu
 
 :rungekutta
-julia %~dp0julia\lab3-rungekutta.jl
+call %juliapath% %~dp0julia\lab3-rungekutta.jl
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -256,7 +256,7 @@ chcp 65001
 goto menu
 
 :newton
-julia %~dp0julia\lab4-newton.jl
+call %juliapath% %~dp0julia\lab4-newton.jl
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -264,7 +264,7 @@ chcp 65001
 goto menu
 
 :gauss
-julia %~dp0julia\lab5-gauss.jl
+call %juliapath% %~dp0julia\lab5-gauss.jl
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
