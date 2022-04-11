@@ -1,7 +1,13 @@
 @REM 不要在代码块内部进行CLS，最好让调用者进行
 @echo off
+@REM cd ..
 title Computational Method Lab Demo
-color f
+@REM color f
+set juliapath=%~dp0
+set juliapath=%juliapath:~0,-4%pkg\bin\julia.bat
+@REM :~0,-4%pkg\julia.bat
+@REM echo %juliapath%
+@REM pause
 :copyright
 cls
 chcp 65001
@@ -95,7 +101,7 @@ cls
 goto copyright
 
 :greeting
-color f
+@REM color f
 chcp 65001
 echo:
 echo        Welcome! 
@@ -104,12 +110,18 @@ echo        This is Computational Method Lab Demo, which is used to demonstrate 
 echo        the 5 lab questions.
 echo:       
 @REM echo Press any key to continue... & pause > nul
+goto install
+
+:install
+echo    Installing Julia Packages...
+    set JULIA_PKG_SERVER=mirrors.tuna.tsinghua.edu.cn/julia
+call %juliapath% %~dp0julia\install-pkg.jl
+call %juliapath% %~dp0julia\build-pkg.jl
 goto menu
-
 @REM @echo on
-set juliapath=%~dp0pkg\bin\julia.exe
-
-if exist %juliapath% ( goto menu ) else ( goto start_fail )
+@REM set juliapath=%~dp0pkg\bin\julia.exe
+@REM 
+@REM if exist %juliapath% ( goto menu ) else ( goto start_fail )
 
 :exit_info
 echo:
@@ -139,7 +151,7 @@ goto end
 @REM @REM Goto :eof
 
 :menu
-color f
+@REM color f
 echo:
 echo        请根据提示输入数字, 运行相应实验代码或退出：
 echo:
@@ -220,8 +232,8 @@ echo 如果有需要, 请在 .\etc\file.txt 中获取更多有关依赖的信息
 goto exit_info
 
 :lagrange
-julia %~dp0julia\lab1-lagrange.jl
-color f
+call %juliapath% %~dp0julia\lab1-lagrange.jl
+@REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
 chcp 65001
@@ -229,7 +241,7 @@ goto menu
 
 :romberg
 julia %~dp0julia\lab2-romberg.jl
-color f
+@REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
 chcp 65001
@@ -237,7 +249,7 @@ goto menu
 
 :rungekutta
 julia %~dp0julia\lab3-rungekutta.jl
-color f
+@REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
 chcp 65001
@@ -245,7 +257,7 @@ goto menu
 
 :newton
 julia %~dp0julia\lab4-newton.jl
-color f
+@REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
 chcp 65001
@@ -253,7 +265,7 @@ goto menu
 
 :gauss
 julia %~dp0julia\lab5-gauss.jl
-color f
+@REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
 chcp 65001
