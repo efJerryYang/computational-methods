@@ -81,10 +81,10 @@ md"""
 """
 
 # ╔═╡ 7dd4953f-f1f8-4d98-a7a9-4deac6931d26
-using DifferentialEquations
+# using DifferentialEquations
 # using Plots
 using LaTeXStrings
-using Statistics
+# using Statistics
 # using ImplicitEquations
 using PrettyTables
 
@@ -186,17 +186,17 @@ md"""
 """
 
 # ╔═╡ d3487c08-cc93-4012-be06-119e4507a85f
-function show_plot(p, f::Function, tspan, u0::Float64, reltol, abstol, dense::Bool)
-    prob = ODEProblem(f, u0, tspan)
-    alg = RK4()
-    sol = solve(prob, alg, reltol=1e-8, abstol=1e-8)
+# function show_plot(p, f::Function, tspan, u0::Float64, reltol, abstol, dense::Bool)
+    # prob = ODEProblem(f, u0, tspan)
+    # alg = RK4()
+    # sol = solve(prob, alg, reltol=1e-8, abstol=1e-8)
     # if dense
     #     p = plot!(sol, seriestype=:scatter, markersize=1, msw=0, color=:red, label="lib solver")
     # else
     #     p = plot!(sol.t, sol.u, seriestype=:scatter, markersize=2, msw=0, color=:red, label="lib solver")
     # end
-    p, sol
-end
+    # p, sol
+# end
 function show_plot(p, f::Function, xspan, y0::Float64, iternum::Integer)
     xs, ys = rungekutta(f, xspan, y0, iternum)
     # p = plot!(xs, ys, seriestype=:scatter, markersize=4, msw=0, color=:green, label="my solver")
@@ -219,7 +219,7 @@ function show_result(f1::Function, f2::Function, f3::Function, xspan, y0, iternu
         print("\nIternum: $iternum\n")
         # p = plot(legend=:outertopright, title=L"~~~~~~~~~~~~~~~~~~~~" * title)
         p = 0
-        p, sol = show_plot(p, f1, xspan, y0, 1e-8, 1e-8, dense)
+        # p, sol = show_plot(p, f1, xspan, y0, 1e-8, 1e-8, dense)
         p, xs, ys = show_plot(p, f2, xspan, y0, iternum)
         p, xt, yt = show_plot(p, f3, xs, show, text)
         data = [xt yt ys]
@@ -228,7 +228,7 @@ function show_result(f1::Function, f2::Function, f3::Function, xspan, y0, iternu
             data;
             alignment=[:c, :c, :c],
             header=header,
-            header_crayon=crayon"bold",
+            # header_crayon=crayon"bold",
             # tf = tf_markdown,
             formatters=ft_printf("%14.8f"))
         # display(p)

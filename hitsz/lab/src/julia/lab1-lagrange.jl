@@ -303,7 +303,7 @@ function show_result(f::Function, split_nums::Vector, test_x::Vector, xlim::Vect
             data;
             alignment=[:c, :c, :c],
             header=header,
-            header_crayon=crayon"bold",
+            # header_crayon=crayon"bold",
             # tf = tf_markdown,
             formatters=ft_printf("%11.6f"))
         
@@ -350,7 +350,7 @@ function show_result(f::Function, split_nums::Nothing, split_xs::Vector, test_x,
         data;
         alignment=[:c,:c,:c],
         header=header,
-        header_crayon=crayon"bold",
+        # header_crayon=crayon"bold",
         # tf = tf_markdown,
         formatters=ft_printf("%11.6f"))
 
