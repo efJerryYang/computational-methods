@@ -4,7 +4,7 @@
 title Computational Method Lab Demo
 @REM color f
 set juliapath=%~dp0
-set juliapath=%juliapath:~0,-4%pkg\bin\julia.bat
+set juliapath=%juliapath:~0,-4%pkg\bin\julia.exe
 @REM :~0,-4%pkg\julia.bat
 @REM echo %juliapath%
 @REM pause
@@ -94,7 +94,7 @@ goto copyright
 
 :terms
 echo:
-type %~dp0LICENSE
+type "%~dp0LICENSE"
 echo:
 echo Press any key to continue... & pause > nul
 cls
@@ -110,13 +110,13 @@ echo        This is Computational Method Lab Demo, which is used to demonstrate 
 echo        the 5 lab questions.
 echo:       
 @REM echo Press any key to continue... & pause > nul
-goto install
+goto menu
 
 :install
 echo    Installing Julia Packages...
 set JULIA_PKG_SERVER=mirrors.tuna.tsinghua.edu.cn/julia
-call %juliapath% %~dp0julia\install-pkg.jl
-call %juliapath% %~dp0julia\build-pkg.jl
+call "%juliapath%" "%~dp0julia\install-pkg.jl"
+call "%juliapath%" "%~dp0julia\build-pkg.jl"
 goto menu
 @REM @echo on
 @REM set juliapath=%~dp0pkg\bin\julia.exe
@@ -125,10 +125,10 @@ goto menu
 
 :exit_info
 echo:
-echo If some characters cannot be displayed correctly, please make sure the terminal encoding is UTF-8.
-echo:
-echo That means you should see "Active code page: 65001" at the entry of this terminal.
-echo:
+@REM echo If some characters cannot be displayed correctly, please make sure the terminal encoding is UTF-8.
+@REM echo:
+@REM echo That means you should see "Active code page: 65001" at the entry of this terminal.
+@REM echo:
 echo Press any key to continue... & pause > nul
 goto end
 
@@ -153,7 +153,8 @@ goto end
 :menu
 @REM color f
 echo:
-echo        请根据提示输入数字, 运行相应实验代码或退出：
+echo        Please enter the number according to the prompt, run the corresponding lab code or exit:
+@REM echo        请根据提示输入数字, 运行相应实验代码或退出：
 echo:
 echo        1. Lagrange
 echo        2. Romberg
@@ -213,7 +214,7 @@ echo:
 echo 错误! 无法启动程序 julia.exe.
 @REM echo ERROR! Fail to start julia.exe.
 echo:
-if exist %~dp0pkg ( 
+if exist "%~dp0pkg" ( 
     echo 文件夹 pkg 存在, 为便于重新安装请将其所有子目录移除.
     @REM echo Folder pkg exists, please remove it and all its subdirectories.
 ) else (
@@ -232,7 +233,7 @@ echo 如果有需要, 请在 .\etc\file.txt 中获取更多有关依赖的信息
 goto exit_info
 
 :lagrange
-call %juliapath% %~dp0julia\lab1-lagrange.jl
+call "%juliapath%" -q --sysimage="%~dp0sys_test_roots.so" "%~dp0julia\lab1-lagrange.jl"
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -240,7 +241,7 @@ chcp 65001
 goto menu
 
 :romberg
-call %juliapath% %~dp0julia\lab2-romberg.jl
+call "%juliapath%" -q --sysimage="%~dp0sys_test_roots.so" "%~dp0julia\lab2-romberg.jl"
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -248,7 +249,7 @@ chcp 65001
 goto menu
 
 :rungekutta
-call %juliapath% %~dp0julia\lab3-rungekutta.jl
+call "%juliapath%" -q --sysimage="%~dp0sys_test_roots.so" "%~dp0julia\lab3-rungekutta.jl"
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -256,7 +257,7 @@ chcp 65001
 goto menu
 
 :newton
-call %juliapath% %~dp0julia\lab4-newton.jl
+call "%juliapath%" -q --sysimage="%~dp0sys_test_roots.so" "%~dp0julia\lab4-newton.jl"
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -264,7 +265,7 @@ chcp 65001
 goto menu
 
 :gauss
-call %juliapath% %~dp0julia\lab5-gauss.jl
+call "%juliapath%" -q --sysimage="%~dp0sys_test_roots.so" "%~dp0julia\lab5-gauss.jl"
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul

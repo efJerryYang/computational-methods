@@ -6,7 +6,7 @@ mshta vbscript:createobject("wscript.shell").run("""%~nx0"" h",0)(window.close)&
 
     setlocal enableextensions disabledelayedexpansion
 
-    set "consoleName=testing"
+    set "consoleName=executor"
 
     :: http://technet.microsoft.com/en-us/library/cc978570.aspx
     (   reg add "HKCU\Console\%consoleName%" /f 
@@ -14,7 +14,7 @@ mshta vbscript:createobject("wscript.shell").run("""%~nx0"" h",0)(window.close)&
         reg add "HKCU\Console\%consoleName%" /f /v "FontFamily"              /t "REG_DWORD"  /d 0x00000036
         reg add "HKCU\Console\%consoleName%" /f /v "FontSize"                /t "REG_DWORD"  /d 0x00120008
         reg add "HKCU\Console\%consoleName%" /f /v "FontWeight"              /t "REG_DWORD"  /d 0x00000001
-        reg add "HKCU\Console\%consoleName%" /f /v "QuickEdit"               /t "REG_DWORD"  /d 0x00000000
+        reg add "HKCU\Console\%consoleName%" /f /v "QuickEdit"               /t "REG_DWORD"  /d 0x00000001
         reg add "HKCU\Console\%consoleName%" /f /v "ScreenBufferSize"        /t "REG_DWORD"  /d 0x07d00050
         reg add "HKCU\Console\%consoleName%" /f /v "HistoryBufferSize"       /t "REG_DWORD"  /d 0x00000999
         reg add "HKCU\Console\%consoleName%" /f /v "NumberOfHistoryBuffers"  /t "REG_DWORD"  /d 0x00000005
@@ -22,4 +22,4 @@ mshta vbscript:createobject("wscript.shell").run("""%~nx0"" h",0)(window.close)&
         reg add "HKCU\Console\%consoleName%" /f /v "FullScreen"              /t "REG_DWORD"  /d 0x00000001
     ) > nul
 
-    start "%consoleName%" /max %~dp0src\julia-caller.bat
+    start "%consoleName%" /max "%~dp0src\julia-caller.bat"
