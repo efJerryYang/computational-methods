@@ -4,7 +4,8 @@
 title Computational Method Lab Demo
 @REM color f
 set juliapath=%~dp0
-set juliapath=%juliapath:~0,-4%pkg\bin\julia.exe
+@REM set juliapath=%juliapath:~0,-4%pkg\bin\julia.exe
+set juliapath=%juliapath:~0,-4%pkg\julia.exe
 @REM :~0,-4%pkg\julia.bat
 @REM echo %juliapath%
 @REM pause
@@ -110,11 +111,15 @@ echo        This is Computational Method Lab Demo, which is used to demonstrate 
 echo        the 5 lab questions.
 echo:       
 @REM echo Press any key to continue... & pause > nul
-goto menu
+goto install
 
 :install
 echo    Installing Julia Packages...
 set JULIA_PKG_SERVER=mirrors.tuna.tsinghua.edu.cn/julia
+@REM @echo on
+set JULIA_DEPOT_PATH=%~dp0pkg
+@REM set CONDA_JL_HOME=%~dp0pkg\conda
+@REM @echo off
 call "%juliapath%" "%~dp0julia\install-pkg.jl"
 call "%juliapath%" "%~dp0julia\build-pkg.jl"
 goto menu
@@ -233,7 +238,7 @@ echo 如果有需要, 请在 .\etc\file.txt 中获取更多有关依赖的信息
 goto exit_info
 
 :lagrange
-call "%juliapath%" -q --sysimage="%~dp0sys_test_roots.so" "%~dp0julia\lab1-lagrange.jl"
+call "%juliapath%" -q "%~dp0julia\lab1-lagrange.jl"
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -241,7 +246,7 @@ chcp 65001
 goto menu
 
 :romberg
-call "%juliapath%" -q --sysimage="%~dp0sys_test_roots.so" "%~dp0julia\lab2-romberg.jl"
+call "%juliapath%" -q "%~dp0julia\lab2-romberg.jl"
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -249,7 +254,7 @@ chcp 65001
 goto menu
 
 :rungekutta
-call "%juliapath%" -q --sysimage="%~dp0sys_test_roots.so" "%~dp0julia\lab3-rungekutta.jl"
+call "%juliapath%" -q "%~dp0julia\lab3-rungekutta.jl"
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -257,7 +262,7 @@ chcp 65001
 goto menu
 
 :newton
-call "%juliapath%" -q --sysimage="%~dp0sys_test_roots.so" "%~dp0julia\lab4-newton.jl"
+call "%juliapath%" -q "%~dp0julia\lab4-newton.jl"
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
@@ -265,7 +270,7 @@ chcp 65001
 goto menu
 
 :gauss
-call "%juliapath%" -q --sysimage="%~dp0sys_test_roots.so" "%~dp0julia\lab5-gauss.jl"
+call "%juliapath%" -q "%~dp0julia\lab5-gauss.jl"
 @REM color f
 echo:
 @REM echo Press any key to continue... & pause > nul
