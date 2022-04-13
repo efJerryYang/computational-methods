@@ -16,7 +16,7 @@ function julia_main()::Cint
         println("Type --help or -h to see available options.")
     else
         if ARGS[1] == "--help" || ARGS[1] == "-h"
-            print("""Demo.exe <options>
+            print("""Demo.exe [switches]
              -h, --help\t\t\tPrint this help infomation
              -1, --lab1, --lagrange\t\tDisplay lab1-lagrange result
              -2, --lab2, --romberg\t\tDisplay lab2-romberg result
