@@ -447,7 +447,7 @@ md"""
 """
 
 # ╔═╡ 0efe3358-381d-4ae6-bb3d-26c61a5359d1
-md"""
+display(md"""
 ### 参考资料
 
 1. julia covert sym to func https://stackoverflow.com/questions/27357579/julia-how-do-i-convert-a-symbolic-expression-to-a-function
@@ -461,7 +461,7 @@ md"""
 9. how to choose starting point https://math.stackexchange.com/questions/743373/how-to-choose-the-starting-point-in-newtons-method
 10. wikipedia newton fractal https://en.wikipedia.org/wiki/Newton_fractal
 11. How to find all roots of complex polynomials by Newton’s method https://link.springer.com/article/10.1007/s002220100149
-"""
+""")
 
 # ╔═╡ Cell order:
 # ╟─08ed10aa-cd4a-4732-b8b4-aebe9b0a1226

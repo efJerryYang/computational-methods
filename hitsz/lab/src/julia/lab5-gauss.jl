@@ -509,7 +509,7 @@ md"""
 """
 
 # ╔═╡ 8abcee4c-7840-4ee1-b287-583921330037
-md"""
+display(md"""
 ### 参考资料
 
 1. julia swapcols fast https://stackoverflow.com/questions/58667332/is-there-a-way-to-swap-columns-in-o1-in-julia
@@ -523,7 +523,7 @@ md"""
 9. moving average https://stackoverflow.com/questions/12636613/how-to-calculate-moving-average-without-keeping-the-count-and-data-total
 10. 《数值分析原理》吴勃英 46-48
 11. 《计算方法实验指导》实验题目 5 高斯(Gauss)列主元消去法
-"""
+""")
 
 # ╔═╡ Cell order:
 # ╟─1d7eb8a3-b4b0-4ce8-bcac-24d3c261146d

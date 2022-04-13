@@ -553,7 +553,7 @@ md"""
 """
 
 # ╔═╡ e7fc0eac-142c-469f-9829-226b701b50ac
-md"""
+display(md"""
 ### 参考资料
 
 1. julia plot xlim and ylim https://stackoverflow.com/questions/53230969/how-to-scale-a-plot-in-julia-using-plots-jl
@@ -563,7 +563,7 @@ md"""
 5. markdown多张图片并排显示 https://www.cnblogs.com/jaycethanks/p/12201959.html
 6. markdown图片大小设定 https://www.cnblogs.com/jaycethanks/p/12202169.html
 7. 《计算方法实验指导》实验题目 1 拉格朗日(Lagrange)插值
-"""
+""")
 
 # ╔═╡ Cell order:
 # ╟─76693cab-7550-4ed2-817b-4cabbc819b8e

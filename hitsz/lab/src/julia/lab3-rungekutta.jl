@@ -448,7 +448,7 @@ md"""
 """
 
 # ╔═╡ f80f51b3-6a23-477a-86bd-639693748b63
-md"""
+display(md"""
 ### 参考资料
 
 1. julia ordinary differential equations tutorial https://diffeq.sciml.ai/stable/tutorials/ode_example/
@@ -464,7 +464,7 @@ md"""
 6. julia ode common solver option https://diffeq.sciml.ai/stable/basics/common_solver_opts/#solver_options
 
 7. 《计算方法实验指导》实验题目 3 四阶龙格—库塔(Runge—Kutta)方法
-"""
+""")
 
 # ╔═╡ Cell order:
 # ╟─6211a40b-da2a-438a-bd4b-f7f3818db8dd

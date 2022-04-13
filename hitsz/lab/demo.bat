@@ -12,7 +12,7 @@ mshta vbscript:createobject("wscript.shell").run("""%~nx0"" h",0)(window.close)&
     (   reg add "HKCU\Console\%consoleName%" /f 
         reg add "HKCU\Console\%consoleName%" /f /v "FaceName"                /t "REG_SZ"     /d "Consolas"
         reg add "HKCU\Console\%consoleName%" /f /v "FontFamily"              /t "REG_DWORD"  /d 0x00000036
-        reg add "HKCU\Console\%consoleName%" /f /v "FontSize"                /t "REG_DWORD"  /d 0x00120008
+        reg add "HKCU\Console\%consoleName%" /f /v "FontSize"                /t "REG_DWORD"  /d 0x00120007
         reg add "HKCU\Console\%consoleName%" /f /v "FontWeight"              /t "REG_DWORD"  /d 0x00000001
         reg add "HKCU\Console\%consoleName%" /f /v "QuickEdit"               /t "REG_DWORD"  /d 0x00000001
         reg add "HKCU\Console\%consoleName%" /f /v "ScreenBufferSize"        /t "REG_DWORD"  /d 0x07d00050

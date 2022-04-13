@@ -167,14 +167,14 @@ md"""
 """
 
 # ╔═╡ 40e75753-9cdc-44cc-a8e3-b8953d56fb37
-md"""
+display(md"""
 ### 参考资料
 
 1. julia 数值积分 https://blog.csdn.net/m0_37816922/article/details/103475445
 2. Romberg Integration-Numerical Analysis http://homepages.math.uic.edu/~jan/mcs471/romberg.pdf
 3. 《数值分析》吴勃英 196-199
 
-"""
+""")
 
 # ╔═╡ Cell order:
 # ╟─1198114b-4ee5-479d-a539-4770886bbaa4
