@@ -111,13 +111,13 @@ echo        This is Computational Method Lab Demo, which is used to demonstrate 
 echo        the 5 lab questions.
 echo:       
 @REM echo Press any key to continue... & pause > nul
-goto install
+goto menu
 
 :install
 echo    Installing Julia Packages...
 set JULIA_PKG_SERVER=mirrors.tuna.tsinghua.edu.cn/julia
 @REM @echo on
-set JULIA_DEPOT_PATH=%~dp0pkg
+@REM set JULIA_DEPOT_PATH=%~dp0pkg
 @REM set CONDA_JL_HOME=%~dp0pkg\conda
 @REM @echo off
 call "%juliapath%" "%~dp0julia\install-pkg.jl"
@@ -200,7 +200,7 @@ if %num%==1 (
 ) else (
     @REM cls
     echo:
-    echo 请输入有效的数字重试.
+    echo Please retry with valid number.
     echo:
     chcp 65001
     goto menu

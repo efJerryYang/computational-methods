@@ -1,4 +1,13 @@
 @echo off
+set juliapath=%~dp0pkg\julia.exe
+echo    Installing Julia Packages...
+set JULIA_PKG_SERVER=mirrors.tuna.tsinghua.edu.cn/julia
+@REM @echo on
+@REM set JULIA_DEPOT_PATH=%~dp0
+@REM set CONDA_JL_HOME=%~dp0pkg\conda
+@REM @echo off
+call "%juliapath%" "%~dp0src\julia\install-pkg.jl"
+call "%juliapath%" "%~dp0src\julia\build-pkg.jl"
 if "%1" == "h" goto begin
 mshta vbscript:createobject("wscript.shell").run("""%~nx0"" h",0)(window.close)&&exit
 :begin
