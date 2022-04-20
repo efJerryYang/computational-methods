@@ -40,6 +40,25 @@ Runge-Kutta Solver:
 │     1.00000000 │  3125.00000000 │     0.00001694 │     0.00000000 │     0.00000000 │  
 └────────────────┴────────────────┴────────────────┴────────────────┴────────────────┘  
 ```
+<center>
+<figure>
+    <figcaption align="center"<b>图1：左图为h=0.2时所求数值解，右图为h=0.1时所求数值解</b></figcaption>
+    <img align="center" src=assets/hw5_h0.2.svg style="zoom: 57%">
+    <img align="center" src=assets/hw5_h0.1.svg style="zoom: 57%">
+</figure>
+</center>
+
+
+
+<center>
+<figure>
+    <figcaption align="center"<b>图2：左图为h=0.05时所求数值解，右图为h=0.025时所求数值解</b></figcaption>
+    <img align="center" src=assets/hw5_h0.05.svg style="zoom: 57%">
+    <img align="center" src=assets/hw5_h0.025.svg style="zoom: 57%">
+</figure>
+</center>
+
+
 
 **具体的求解过程调用的`Julia`代码：**
 
