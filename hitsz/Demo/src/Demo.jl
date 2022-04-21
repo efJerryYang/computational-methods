@@ -7,8 +7,6 @@ using LaTeXStrings
 using PrettyTables
 using NLsolve
 using Roots
-using SymPy
-using PyCall
 function julia_main()::Cint
     len = length(ARGS)
     if len == 0
