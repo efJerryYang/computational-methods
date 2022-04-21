@@ -10,7 +10,7 @@ display(md"""
 using Printf
 # using Plots
 using NLsolve
-using SymPy
+# using SymPy
 using Roots
 using PrettyTables
 using LaTeXStrings
@@ -112,8 +112,8 @@ function collect_data(f::Function, df::Function, f!::Function, j!::Function,
 end
 
 # ╔═╡ 3c3d940c-2869-467c-8230-68336edf8f3b
-function show_result(f::Function, x0, ϵ1, ϵ2, N, title)
-    f, df = get_func_diff(f)
+function show_result(f::Function, df::Function, x0, ϵ1, ϵ2, N, title)
+    # f, df = get_func_diff(f)
     f!, j! = redefine_func(f, df)
 
     header = (["Method", "x", "f(x)", "Time Cost (s)", "Iter"])
@@ -126,8 +126,8 @@ function show_result(f::Function, x0, ϵ1, ϵ2, N, title)
     )
 
 end
-function show_result(f::Function, x0, λ, ϵ1, ϵ2, N, title)
-    f, df = get_func_diff(f)
+function show_result(f::Function, df::Function, x0, λ, ϵ1, ϵ2, N, title)
+    # f, df = get_func_diff(f)
     f!, j! = redefine_func(f, df)
 
     header = (["Method", "x", "f(x)", "Time Cost (s)", "Iter"])
@@ -143,6 +143,8 @@ end
 
 # ╔═╡ 740751b5-cd64-430e-a8d6-5acfea82056b
 f(x) = cos(x) - x
+# 因PyCall的可移植性原因，此处将代码改为显式的求出df，但原有代码是可以不手动求导的
+df(x) = -sin(x) - 1
 ϵ1 = 1e-6
 ϵ2 = 1e-4
 N = 10
@@ -150,10 +152,13 @@ x0 = pi / 4
 title = L"Problem\ 1.1:\ f(x)=\cos x -x=0,~~~~x_0=\frac{\pi}{4}\approx 0.78539816"
 println()
 println(title)
-show_result(f, x0, ϵ1, ϵ2, N, title)
+
+show_result(f, df, x0, ϵ1, ϵ2, N, title)
 
 # ╔═╡ d0e762e5-19c9-4a5c-84f0-076cd746d9b7
 f(x) = exp(-x) - sin(x)
+# 因PyCall的可移植性原因，此处将代码改为显式的求出df，但原有代码是可以不手动求导的
+df(x) = -exp(-x) - cos(x)
 ϵ1 = 1e-6
 ϵ2 = 1e-4
 N = 10
@@ -161,11 +166,13 @@ x0 = 0.6
 title = L"Problem\ 1.2:\ f(x)=e^{-x}-\sin x=0,~~~~x_0=0.6"
 println()
 println(title)
-show_result(f, x0, ϵ1, ϵ2, N, title)
+show_result(f, df, x0, ϵ1, ϵ2, N, title)
 
 
 # ╔═╡ 51539216-4021-401b-9b29-5b207df57f07
 f(x) = x - exp(-x)
+# 因PyCall的可移植性原因，此处将代码改为显式的求出df，但原有代码是可以不手动求导的
+df(x) = 1 + exp(-x)
 ϵ1 = 1e-6
 ϵ2 = 1e-4
 N = 10
@@ -173,11 +180,13 @@ x0 = 0.5
 title = L"Problem\ 2.1:\ f(x)=x-e^{-x}=0,~~~~x_0=0.5"
 println()
 println(title)
-show_result(f, x0, ϵ1, ϵ2, N, title)
+show_result(f, df, x0, ϵ1, ϵ2, N, title)
 
 
 # ╔═╡ a9d91d31-4460-480f-9f2c-387c73c95e53
 f(x) = x^2 - 2x * exp(-x) + exp(-2x)
+# 因PyCall的可移植性原因，此处将代码改为显式的求出df，但原有代码是可以不手动求导的
+df(x) = 2(x - exp(-x)) * (1 + exp(-x))
 ϵ1 = 1e-6
 ϵ2 = 1e-4
 N = 20
@@ -186,7 +195,7 @@ x0 = 0.5
 title = L"Problem\ 2.2:\ f(x)=x^2 -2x e^{-x} + e^{-2x}=0,~~~~ x_0=0.5"
 println()
 println(title)
-show_result(f, x0, λ, ϵ1, ϵ2, N, title)
+show_result(f, df, x0, λ, ϵ1, ϵ2, N, title)
 
 # ╔═╡ bf8ffa46-acbe-4464-9cff-e39f661c52fc
 md"""
