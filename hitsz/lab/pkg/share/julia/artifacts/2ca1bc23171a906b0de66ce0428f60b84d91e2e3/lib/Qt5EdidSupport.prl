@@ -1,0 +1,7 @@
+QMAKE_PRL_BUILD_DIR = /workspace/srcdir/build/src/platformsupport/edid
+QMAKE_PRO_INPUT = edid.pro
+QMAKE_PRL_TARGET = libQt5EdidSupport.a
+QMAKE_PRL_CONFIG = lex yacc debug depend_includepath testcase_targets import_qpa_plugin windows prepare_docs qt_docs_targets qt_build_extra file_copies qmake_use qt warn_on link_prl debug_and_release cross_compile no_plugin_manifest win32 mingw gcc cross_compile sse2 aesni sse3 ssse3 sse4_1 sse4_2 compile_examples largefile rdrnd shani x86SimdAlways prefix_build force_independent force_bootstrap utf8_source create_prl link_prl no_private_qt_headers_warning QTDIR_build qt_example_installs exceptions_off testcase_exceptions warning_clean debug DebugBuild Debug build_pass static internal_module relative_qt_rpath target_qt c++11 strict_c++ c++14 c++1z c99 c11 split_incpath qt_install_headers need_fwd_pri qt_install_module create_cmake skip_target_version_ext compiler_supports_fpmath debug DebugBuild Debug build_pass have_target staticlib no_plist exclusive_builds debug_info no_autoqmake thread moc resources
+QMAKE_PRL_VERSION = 5.15.2
+QMAKE_PRL_LIBS = $$[QT_INSTALL_LIBS]/libQt5Core.a
+QMAKE_PRL_LIBS_FOR_CMAKE = $$[QT_INSTALL_LIBS]/libQt5Core.a;;;

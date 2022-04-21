@@ -1,0 +1,14 @@
+prefix=/workspace/destdir
+exec_prefix=${prefix}
+libdir=/workspace/destdir/bin
+includedir=/workspace/destdir/include
+
+Name: libavfilter
+Description: FFmpeg audio/video filtering library
+Version: 7.110.100
+Requires: 
+Requires.private: libswscale >= 5.9.100, libpostproc >= 55.9.100, libavformat >= 58.76.100, libavcodec >= 58.134.100, libswresample >= 3.9.100, libavresample >= 4.0.0, libavutil >= 56.70.100
+Conflicts:
+Libs: -L${libdir}  -lavfilter 
+Libs.private: -lm -L/workspace/destdir/lib -lass -liconv -L/workspace/destdir/lib -lfontconfig -L/workspace/destdir/lib -lfreetype -L/workspace/destdir/lib -L/workspace/destdir/lib -lz -L/workspace/destdir/bin -L/workspace/destdir/lib -lexpat -lharfbuzz -lm -L/workspace/destdir/lib -L/workspace/destdir/lib -L/workspace/destdir/lib -lz -lgraphite2 -lglib-2.0 -lintl -lws2_32 -lole32 -lwinmm -lshlwapi -lm -L/workspace/destdir/lib -lpcre -lfribidi -lfreetype -L/workspace/destdir/lib -L/workspace/destdir/lib -lz -lbz2 -L/workspace/destdir/lib -lfreetype -L/workspace/destdir/lib -L/workspace/destdir/lib -lz -L/workspace/destdir/bin -lbz2
+Cflags: -I${includedir}
