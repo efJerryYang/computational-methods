@@ -52,20 +52,20 @@ function newton(f::Function, df::Function, ϵ1, ϵ2, N, x0)
 end
 
 # ╔═╡ 1b10f5fb-e597-4cd8-a2e8-03f974053d65
-function get_func_diff(symf::Sym)
-    @syms x
-    symdf = diff(symf)
-    f = lambdify(symf)
-    df = lambdify(symdf)
-    f, df
-end
-function get_func_diff(f::Function)
-    @syms x
-    symf = f(x)
-    symdf = diff(symf)
-    df = lambdify(symdf)
-    f, df
-end
+# function get_func_diff(symf::Sym)
+#     @syms x
+#     symdf = diff(symf)
+#     f = lambdify(symf)
+#     df = lambdify(symdf)
+#     f, df
+# end
+# function get_func_diff(f::Function)
+#     @syms x
+#     symf = f(x)
+#     symdf = diff(symf)
+#     df = lambdify(symdf)
+#     f, df
+# end
 function redefine_func(f::Function, df::Function)
     function f!(r, x)
         r .= f.(x)
