@@ -1,7 +1,0 @@
-precompile(Tuple{typeof(Base.delete!), Base.IdDict{Any, Any}, Any})
-precompile(Tuple{typeof(REPL.LineEdit.activate), REPL.LineEdit.TextInterface, REPL.LineEdit.MIState, REPL.Terminals.AbstractTerminal, REPL.Terminals.TextTerminal})
-precompile(Tuple{typeof(REPL.LineEdit.refresh_multi_line), REPL.Terminals.UnixTerminal, Any})
-precompile(Tuple{typeof(REPL.LineEdit.refresh_multi_line), REPL.Terminals.TerminalBuffer, REPL.LineEdit.ModeState})
-precompile(Tuple{REPL.LineEdit.var"#25#26"{REPL.LineEdit.var"#240#248", String}, Any, Any})
-precompile(Tuple{REPL.LineEdit.var"#240#248", REPL.LineEdit.MIState, REPL.LineEdit.ModeState, Any})
-precompile(Tuple{typeof(REPL.Terminals.cmove_up), REPL.Terminals.TerminalBuffer})
