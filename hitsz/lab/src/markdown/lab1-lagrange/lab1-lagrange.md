@@ -11,18 +11,33 @@
 该实验报告主要分为7个部分，大纲罗列如下:
 
 - **实验简介**：即本部分的所有内容
+
 - **数学原理**：对拉格朗日插值算法的数学原理进行阐述
+
 - **代码实现**：使用`Julia`语言，根据数学原理，编写实验代码
-- **测试代码**：对于程序的运行、输出进行测试的部分
-  - Test 1 - Simple: 使用教材例题对程序运行进行简单的测试，确保基本的程序流程的正确性
-  - Test 2 - Performance: 本实验中主要是对于不同代码实现性能的测试，最终选择了耗时更短的实现，同时由于运行较为耗时，最终会处于被注释的状态
+
 - **实验题目**：实验指导书中所要求完成的实验题目，作有便于直观观察的**示意图**，同时题目答案已输出为**表格**展示。
-  - **执行代码**：本部分是对于各个问题求解的过程进行封装，对于外界只需要传入问题所需参数，在封装好的代码内部会调用函数，完成插值求解多项式、绘制示意图以及打印实验结果的部分
+  
+  > 注：详细执行过程请参考**附录：执行代码**部分
+  
   - **问题1**：探究插值的阶数和准确性的关系，观察Runge现象，切身体会为什么不建议使用高阶的多项式插值函数
   - **问题2**：探究插值的区间长度选取和待插值函数的关系，从两个不同的函数对于不同阶数插值、在不同的区间长度下插值对于拟合结果的影响，理解进行插值时选取合适的插值区间来达到期望的拟合精度和对计算资源的节省，是基于对函数本身特点的认识的
   - **问题4**：探究插值外推和内插的相对可靠性，从直觉上很容易意识到内插是比外推可靠的，但这一未经数学证明的结论需要更深入的数学知识，我们通过对部分实例进行探索，从实例呈现的插值结果来看，这一结论成立的条件是基于函数的性质的。
+  
 - **思考题**：本部分为实验指导书中所要求的完成的思考题解答
+
 - **参考资料**：本次实验过程中查阅的参考资料
+
+- **附录**：本实验的非主体部分
+
+  - **执行代码**：本部分是对于各个问题求解的过程进行封装，对于外界只需要传入问题所需参数，在封装好的代码内部会调用函数，完成插值求解多项式、绘制示意图以及打印实验结果的部分
+
+  - **测试代码**：对于程序的运行、输出进行测试的部分
+
+    Test 1 - Simple: 使用教材例题对程序运行进行简单的测试，确保基本的程序流程的正确性
+
+    Test 2 - Performance: 本实验中主要是对于不同代码实现性能的测试，最终选择了耗时更短的实现，同时由于运行较为耗时，最终会处于被注释的状态
+
 
 
 
@@ -72,8 +87,6 @@ y\left( x \right) =\sum_{j=0}^n{f\left( x_j \right) l_j\left( x \right)}. \ \ \ 
 \\
 l_j\left( x \right) =\frac{\left( x-x_0 \right) \left( x-x_1 \right) \cdots \left( x-x_{j-1} \right) \left( x-x_{j+1} \right) \cdots \left( x-x_n \right)}{\left( x_j-x_0 \right) \left( x_j-x_1 \right) \cdots \left( x_j-x_{j-1} \right) \left( x_j-x_{j+1} \right) \cdots \left( x_j-x_n \right)}, j=0,1,2,\cdots ,n. \ \ \ \left(**\right)
 $$
-
-
 
 首先，导入需要使用的包
 
@@ -128,254 +141,7 @@ function lagrange(xs, fxs, x::Vector)
 end
 ```
 
-
-
-### 测试代码
-
-#### Test 1 - Simple
-
-首先，使用教材例题作为简单的测试，用于代码正确性基本的检验，检查对于已给点的正确拟合，以及对内插和外插的分别简单测试。
-
-
-```julia
-test_x = xs = [0, 2, 3, 5, 6]
-test_y = ys = [1, 3, 2, 5, 6]
-@time _,pred_y = lagrange(xs, ys, test_x)
-data = [test_x test_y pred_y]
-header = (["Test x", "Test y", "Pred y"])
-pretty_table(
-    data;
-    alignment=[:c, :c, :c],
-    header=header,
-    header_crayon=crayon"bold",
-    formatters=ft_printf("%11.6f"))
-
-test_x = [-1, 0, 1, 2, 3, 4, 5, 6, 7]
-test_y = [NaN,1, NaN,3, 2,NaN, 5, 6,NaN]
-@time _, pred_y = lagrange(xs, ys, test_x)
-data = [test_x test_y pred_y]
-pretty_table(
-    data;
-    alignment=[:c, :c, :c],
-    header=header,
-    header_crayon=crayon"bold",
-    formatters=ft_printf("%11.6f"))
-
-test_x = xs = [0.4, 0.55, 0.65, 0.80]
-test_y = ys = [0.41075, 0.57815, 0.69675, 0.88811]
-@time _, pred_y = lagrange(xs, ys, test_x)
-data = [test_x test_y pred_y]
-pretty_table(
-    data;
-    alignment=[:c, :c, :c],
-    header=header,
-    header_crayon=crayon"bold",
-    formatters=ft_printf("%11.6f"))
-```
-
-      0.074727 seconds (52.44 k allocations: 2.636 MiB, 99.91% compilation time)
-    ┌─────────────┬─────────────┬─────────────┐
-    │   Test x    │   Test y    │   Pred y    │
-    ├─────────────┼─────────────┼─────────────┤
-    │    0.000000 │    1.000000 │    1.000000 │
-    │    2.000000 │    3.000000 │    3.000000 │
-    │    3.000000 │    2.000000 │    2.000000 │
-    │    5.000000 │    5.000000 │    5.000000 │
-    │    6.000000 │    6.000000 │    6.000000 │
-    └─────────────┴─────────────┴─────────────┘
-      0.000022 seconds (59 allocations: 7.094 KiB)
-    ┌─────────────┬─────────────┬─────────────┐
-    │   Test x    │   Test y    │   Pred y    │
-    ├─────────────┼─────────────┼─────────────┤
-    │   -1.000000 │         NaN │  -12.200000 │
-    │    0.000000 │    1.000000 │    1.000000 │
-    │    1.000000 │         NaN │    4.000000 │
-    │    2.000000 │    3.000000 │    3.000000 │
-    │    3.000000 │    2.000000 │    2.000000 │
-    │    4.000000 │         NaN │    2.800000 │
-    │    5.000000 │    5.000000 │    5.000000 │
-    │    6.000000 │    6.000000 │    6.000000 │
-    │    7.000000 │         NaN │    1.000000 │
-    └─────────────┴─────────────┴─────────────┘
-      0.078833 seconds (52.32 k allocations: 2.653 MiB, 21.31% gc time, 99.93% compilation time)
-    ┌─────────────┬─────────────┬─────────────┐
-    │   Test x    │   Test y    │   Pred y    │
-    ├─────────────┼─────────────┼─────────────┤
-    │    0.400000 │    0.410750 │    0.410750 │
-    │    0.550000 │    0.578150 │    0.578150 │
-    │    0.650000 │    0.696750 │    0.696750 │
-    │    0.800000 │    0.888110 │    0.888110 │
-    └─────────────┴─────────────┴─────────────┘
-
-
-#### Test 2 - Performance
-
-接着，以下测试是为了选用更高效率代码而进行的，用大数组对代码的性能进行评判。
-
-这里由于已经经过了测试，并且本部分运行耗时长，在`Jupyter Notebook`中将代码注释但不删除用以存档。
-
-
-```julia
-xs = [i for i in -10:0.1:10]
-ys = [i^2 for i in -10:0.1:10]
-test_x1 = [i for i in -1000:0.01:100]
-display(@time xs, ys = lagrange(xs, ys, test_x1))
-xs = [i for i in -10:0.1:10]
-ys = [i^3 for i in -10:0.1:10]
-test_x1 = [i for i in -1000:0.01:100]
-display(@time xs, ys = lagrange(xs, ys, test_x1))
-xs = [i for i in -10:0.1:10]
-ys = [i^4 for i in -10:0.1:10]
-test_x1 = [i for i in -1000:0.01:100]
-display(@time xs, ys = lagrange(xs, ys, test_x1))
-xs = [i for i in -10:0.1:10]
-ys = [i^5 for i in -10:0.1:10]
-test_x1 = [i for i in -1000:0.01:100]
-display(@time xs, ys = lagrange(xs, ys, test_x1))
-# display(plot(xs, ys, seriestype=:scatter, markersize=1,msw=0,legend=:outertopright))
-```
-
-before code changes:
-
-```
- 14.301368 seconds (161.61 k allocations: 66.232 GiB, 8.95% gc time)
- 14.055990 seconds (161.61 k allocations: 66.232 GiB, 9.19% gc time)
- 14.121750 seconds (161.61 k allocations: 66.232 GiB, 6.94% gc time)
- 12.479890 seconds (161.61 k allocations: 66.232 GiB, 7.44% gc time)
-```
-
-after code changes:
-```
- 13.299191 seconds (162.01 k allocations: 66.396 GiB, 7.29% gc time)
- 13.303492 seconds (162.01 k allocations: 66.396 GiB, 7.25% gc time)
- 12.577300 seconds (162.01 k allocations: 66.396 GiB, 6.15% gc time)
- 12.780377 seconds (162.01 k allocations: 66.396 GiB, 6.49% gc time)
-```
-
-
-
 ### 实验题目
-
-#### 执行代码
-
-这一部分的代码是将展示结果的部分进行封装，运行时只需要调用一个封装后的函数，传入不同例题所给定的不同参数即可运行得到展示的结果。
-
-首先定义的是展示误差图像的函数，该部分在最终运行时被注释处理，以简化结果呈现。
-
-然后是两个展示结果的函数，由于问题1,2和问题4略有不同，重载了不同参数列表的同名函数。
-
-
-```julia
-function show_error(f::Function, title::String, series_x, series_y)
-    errors = abs.(f.(series_x) - series_y) ./ f.(series_x)
-    plot(series_x, errors, label="relative error", title=title, legend=:outertopright)
-end
-```
-
-
-```julia
-function show_result(f::Function, split_nums::Vector, test_x::Vector, xlim::Vector, ylim::Vector, prefix, text)
-    for n in split_nums
-        # initialization
-        x_min, x_max = xlim
-        x_range = x_min-0.2:0.02:x_max+0.2
-        xs = x_min:(x_max-x_min)/n:x_max
-        ys = f.(xs)
-
-        plot(x_range, f.(x_range), label="f(x)")  # plot f(x)
-        plot!(legend=:outertopright, title=prefix * " $n-Order Interpolation")
-
-        series_x = Vector(x_range)
-        _, series_y = lagrange(xs, ys, series_x)  # compute the interpolation function points
-        plot!(series_x, series_y, color=:violet, label="p(x)")  # add p(x) function curve
-
-        plot!(ylim=ylim, yflip=false)  # add ylim
-        # add sample for lagrange interpolation
-        plot!(xs, ys, seriestype=:scatter, markersize=3, msw=1, color=:deepskyblue, label="sample")  
-
-        test_y = f.(test_x)
-        # add test x & y, plot true points
-        p = plot!(test_x, test_y, seriestype=:scatter, markersize=3, msw=1, color=:blue, label="true")  
-        _, pred_y = lagrange(xs, ys, test_x)
-        println()
-        println(prefix * " $n-Order Interpolation:")
-        
-        data = [test_x test_y pred_y]
-        header = (["Test x", "Test y", "Pred y"])
-        pretty_table(
-            data;
-            alignment=[:c, :c, :c],
-            header=header,
-            header_crayon=crayon"bold",
-            # tf = tf_markdown,
-            formatters=ft_printf("%11.6f"))
-        
-        xmin, xmax = xlims(p)
-        x = xmax + (xmax - xmin) * 0.04
-        y = mean(ylims(p))
-        ymax = ylims(p)[2]
-        annotate!(x, y, text, :black)
-        
-        # add pred_y by lagrange interpolation
-        display(plot!(test_x, pred_y, seriestype=:scatter, markersize=3, msw=1, color=:red, label="approx")) 
-        # display(show_error(f, "Error of $n-Order Interpolation", series_x, series_y))  
-        # DO NOT DISPLAY ERROR IN SUBMIT VERSION!
-    end
-end
-```
-
-
-```julia
-function show_result(f::Function, split_nums::Nothing, split_xs::Vector, test_x, xlim, ylim, prefix, text, comment)
-    x_min, x_max = xlim
-    x_range = x_min:1:x_max+0.2  # x_min cannot be negative
-    xs = split_xs
-    ys = f.(xs)
-
-    plot(x_range, f.(x_range), label="f(x)")  # plot f(x)
-    plot!(legend=:outertopright, title=prefix * " $(size(split_xs,1))-Order Interpolation")
-
-    series_x = Vector(x_range)
-    _, series_y = lagrange(xs, ys, series_x)  # compute the interpolation function points
-    plot!(series_x, series_y, color=:violet, label="p(x)")  # add p(x) function curv
-
-    plot!(ylim=ylim, yflip=false)  # add ylim
-    # add sample for lagrange interpolation
-    plot!(xs, ys, seriestype=:scatter, markersize=3, msw=1, color=:deepskyblue, label="sample")  
-
-    test_y = f.(test_x)
-    # add test x & y, plot true points
-    p = plot!(test_x, test_y, seriestype=:scatter, markersize=3, msw=1, color=:blue, label="true")  
-    _, pred_y = lagrange(xs, ys, test_x)
-
-    println()
-    data = [test_x test_y pred_y]
-    header = (["Test x", "Test y", "Pred y"])
-    pretty_table(
-        data;
-        alignment=[:c,:c,:c],
-        header=header,
-        header_crayon=crayon"bold",
-        # tf = tf_markdown,
-        formatters=ft_printf("%11.6f"))
-
-    xmin, xmax = xlims(p)
-    x = xmax + (xmax - xmin) * 0.04
-    y = mean(ylims(p))
-    ymin, ymax = ylims(p)
-    x2 = xmin + (xmax - xmin) * 0.55
-    y2 = y - (ymax - ymin) * 0.25
-    annotate!(x, y, text, :black)
-    annotate!(x2, y2, comment, :black)
-
-    # add pred_y by lagrange interpolation
-    display(plot!(test_x, pred_y, seriestype=:scatter, markersize=3, msw=1, color=:red, label="approx"))  
-    # display(show_error(f, "Error of $(size(split_xs,1))-Order Interpolation", series_x, series_y))  
-    # DO NOT DISPLAY ERROR IN SUBMIT VERSION!
-end
-```
-
-
 
 #### 问题 1
 
@@ -829,3 +595,229 @@ show_result(f, nothing, split_xs, test_x, xlim, ylim, prefix, text, comment)
 5. markdown多张图片并排显示 https://www.cnblogs.com/jaycethanks/p/12201959.html
 6. markdown图片大小设定 https://www.cnblogs.com/jaycethanks/p/12202169.html
 7. 《计算方法实验指导》实验题目 1 拉格朗日(Lagrange)插值
+
+### 附录
+
+#### 执行代码
+
+这一部分的代码是将展示结果的部分进行封装，运行时只需要调用一个封装后的函数，传入不同例题所给定的不同参数即可运行得到展示的结果。
+
+首先定义的是展示误差图像的函数，该部分在最终运行时被注释处理，以简化结果呈现。
+
+然后是两个展示结果的函数，由于问题1,2和问题4略有不同，重载了不同参数列表的同名函数。
+
+
+```julia
+function show_error(f::Function, title::String, series_x, series_y)
+    errors = abs.(f.(series_x) - series_y) ./ f.(series_x)
+    plot(series_x, errors, label="relative error", title=title, legend=:outertopright)
+end
+```
+
+
+```julia
+function show_result(f::Function, split_nums::Vector, test_x::Vector, xlim::Vector, ylim::Vector, prefix, text)
+    for n in split_nums
+        # initialization
+        x_min, x_max = xlim
+        x_range = x_min-0.2:0.02:x_max+0.2
+        xs = x_min:(x_max-x_min)/n:x_max
+        ys = f.(xs)
+
+        plot(x_range, f.(x_range), label="f(x)")  # plot f(x)
+        plot!(legend=:outertopright, title=prefix * " $n-Order Interpolation")
+        series_x = Vector(x_range)
+        _, series_y = lagrange(xs, ys, series_x)  # compute the interpolation function points
+        plot!(series_x, series_y, color=:violet, label="p(x)")  # add p(x) function curve
+        plot!(ylim=ylim, yflip=false)  # add ylim
+        # add sample for lagrange interpolation
+        plot!(xs, ys, seriestype=:scatter, markersize=3, msw=1, color=:deepskyblue, label="sample")  
+        test_y = f.(test_x)
+        # add test x & y, plot true points
+        p = plot!(test_x, test_y, seriestype=:scatter, markersize=3, msw=1, color=:blue, label="true")  
+        _, pred_y = lagrange(xs, ys, test_x)
+        println()
+        println(prefix * " $n-Order Interpolation:")
+        
+        data = [test_x test_y pred_y]
+        header = (["Test x", "Test y", "Pred y"])
+        pretty_table(
+            data;
+            alignment=[:c, :c, :c],
+            header=header,
+            header_crayon=crayon"bold",
+            formatters=ft_printf("%11.6f"))
+        xmin, xmax = xlims(p)
+        x = xmax + (xmax - xmin) * 0.04
+        y = mean(ylims(p))
+        ymax = ylims(p)[2]
+        annotate!(x, y, text, :black)
+        # add pred_y by lagrange interpolation
+        display(plot!(test_x, pred_y, seriestype=:scatter, markersize=3, msw=1, color=:red, label="approx")) 
+    end
+end
+```
+
+
+```julia
+function show_result(f::Function, split_nums::Nothing, split_xs::Vector, test_x, xlim, ylim, prefix, text, comment)
+    x_min, x_max = xlim
+    x_range = x_min:1:x_max+0.2  # x_min cannot be negative
+    xs = split_xs
+    ys = f.(xs)
+
+    plot(x_range, f.(x_range), label="f(x)")  # plot f(x)
+    plot!(legend=:outertopright, title=prefix * " $(size(split_xs,1))-Order Interpolation")
+    series_x = Vector(x_range)
+    _, series_y = lagrange(xs, ys, series_x)  # compute the interpolation function points
+    plot!(series_x, series_y, color=:violet, label="p(x)")  # add p(x) function curv
+    plot!(ylim=ylim, yflip=false)  # add ylim
+    # add sample for lagrange interpolation
+    plot!(xs, ys, seriestype=:scatter, markersize=3, msw=1, color=:deepskyblue, label="sample")  
+    test_y = f.(test_x)
+    # add test x & y, plot true points
+    p = plot!(test_x, test_y, seriestype=:scatter, markersize=3, msw=1, color=:blue, label="true")  
+    _, pred_y = lagrange(xs, ys, test_x)
+    println()
+    data = [test_x test_y pred_y]
+    header = (["Test x", "Test y", "Pred y"])
+    pretty_table(
+        data;
+        alignment=[:c,:c,:c],
+        header=header,
+        header_crayon=crayon"bold",
+        # tf = tf_markdown,
+        formatters=ft_printf("%11.6f"))
+    xmin, xmax = xlims(p)
+    x = xmax + (xmax - xmin) * 0.04
+    y = mean(ylims(p))
+    ymin, ymax = ylims(p)
+    x2 = xmin + (xmax - xmin) * 0.55
+    y2 = y - (ymax - ymin) * 0.25
+    annotate!(x, y, text, :black)
+    annotate!(x2, y2, comment, :black)
+    # add pred_y by lagrange interpolation
+    display(plot!(test_x, pred_y, seriestype=:scatter, markersize=3, msw=1, color=:red, label="approx"))  
+end
+```
+
+#### 测试代码
+
+##### Test 1 - Simple
+
+首先，使用教材例题作为简单的测试，用于代码正确性基本的检验，检查对于已给点的正确拟合，以及对内插和外插的分别简单测试。
+
+
+```julia
+test_x = xs = [0, 2, 3, 5, 6]
+test_y = ys = [1, 3, 2, 5, 6]
+@time _,pred_y = lagrange(xs, ys, test_x)
+data = [test_x test_y pred_y]
+header = (["Test x", "Test y", "Pred y"])
+pretty_table(
+    data;
+    alignment=[:c, :c, :c],
+    header=header,
+    header_crayon=crayon"bold",
+    formatters=ft_printf("%11.6f"))
+
+test_x = [-1, 0, 1, 2, 3, 4, 5, 6, 7]
+test_y = [NaN,1, NaN,3, 2,NaN, 5, 6,NaN]
+@time _, pred_y = lagrange(xs, ys, test_x)
+data = [test_x test_y pred_y]
+pretty_table(
+    data;
+    alignment=[:c, :c, :c],
+    header=header,
+    header_crayon=crayon"bold",
+    formatters=ft_printf("%11.6f"))
+
+test_x = xs = [0.4, 0.55, 0.65, 0.80]
+test_y = ys = [0.41075, 0.57815, 0.69675, 0.88811]
+@time _, pred_y = lagrange(xs, ys, test_x)
+data = [test_x test_y pred_y]
+pretty_table(
+    data;
+    alignment=[:c, :c, :c],
+    header=header,
+    header_crayon=crayon"bold",
+    formatters=ft_printf("%11.6f"))
+```
+
+      0.074727 seconds (52.44 k allocations: 2.636 MiB, 99.91% compilation time)
+    ┌─────────────┬─────────────┬─────────────┐
+    │   Test x    │   Test y    │   Pred y    │
+    ├─────────────┼─────────────┼─────────────┤
+    │    0.000000 │    1.000000 │    1.000000 │
+    │    2.000000 │    3.000000 │    3.000000 │
+    │    3.000000 │    2.000000 │    2.000000 │
+    │    5.000000 │    5.000000 │    5.000000 │
+    │    6.000000 │    6.000000 │    6.000000 │
+    └─────────────┴─────────────┴─────────────┘
+      0.000022 seconds (59 allocations: 7.094 KiB)
+    ┌─────────────┬─────────────┬─────────────┐
+    │   Test x    │   Test y    │   Pred y    │
+    ├─────────────┼─────────────┼─────────────┤
+    │   -1.000000 │         NaN │  -12.200000 │
+    │    0.000000 │    1.000000 │    1.000000 │
+    │    1.000000 │         NaN │    4.000000 │
+    │    2.000000 │    3.000000 │    3.000000 │
+    │    3.000000 │    2.000000 │    2.000000 │
+    │    4.000000 │         NaN │    2.800000 │
+    │    5.000000 │    5.000000 │    5.000000 │
+    │    6.000000 │    6.000000 │    6.000000 │
+    │    7.000000 │         NaN │    1.000000 │
+    └─────────────┴─────────────┴─────────────┘
+      0.078833 seconds (52.32 k allocations: 2.653 MiB, 21.31% gc time, 99.93% compilation time)
+    ┌─────────────┬─────────────┬─────────────┐
+    │   Test x    │   Test y    │   Pred y    │
+    ├─────────────┼─────────────┼─────────────┤
+    │    0.400000 │    0.410750 │    0.410750 │
+    │    0.550000 │    0.578150 │    0.578150 │
+    │    0.650000 │    0.696750 │    0.696750 │
+    │    0.800000 │    0.888110 │    0.888110 │
+    └─────────────┴─────────────┴─────────────┘
+
+##### Test 2 - Performance
+
+接着，以下测试是为了选用更高效率代码而进行的，用大数组对代码的性能进行评判。
+
+这里由于已经经过了测试，并且本部分运行耗时长，在`Jupyter Notebook`中将代码注释但不删除用以存档。
+
+
+```julia
+xs = [i for i in -10:0.1:10]
+ys = [i^2 for i in -10:0.1:10]
+test_x1 = [i for i in -1000:0.01:100]
+display(@time xs, ys = lagrange(xs, ys, test_x1))
+xs = [i for i in -10:0.1:10]
+ys = [i^3 for i in -10:0.1:10]
+test_x1 = [i for i in -1000:0.01:100]
+display(@time xs, ys = lagrange(xs, ys, test_x1))
+xs = [i for i in -10:0.1:10]
+ys = [i^4 for i in -10:0.1:10]
+test_x1 = [i for i in -1000:0.01:100]
+display(@time xs, ys = lagrange(xs, ys, test_x1))
+xs = [i for i in -10:0.1:10]
+ys = [i^5 for i in -10:0.1:10]
+test_x1 = [i for i in -1000:0.01:100]
+display(@time xs, ys = lagrange(xs, ys, test_x1))
+# display(plot(xs, ys, seriestype=:scatter, markersize=1,msw=0,legend=:outertopright))
+```
+
+before code changes:
+
+```
+ 14.301368 seconds (161.61 k allocations: 66.232 GiB, 8.95% gc time)
+ 14.055990 seconds (161.61 k allocations: 66.232 GiB, 9.19% gc time)
+ 14.121750 seconds (161.61 k allocations: 66.232 GiB, 6.94% gc time)
+ 12.479890 seconds (161.61 k allocations: 66.232 GiB, 7.44% gc time)
+```
+
+after code changes:
+```
+ 13.299191 seconds (162.01 k allocations: 66.396 GiB, 7.29% gc time)
+ 13.303492 seconds (162.01 k allocations: 66.396 GiB, 7.25% gc time)
+ 12.577300 seconds (162.01 k allocations: 66.396 GiB, 6.15% gc time)
+ 12.780377 seconds (162.01 k allocations: 66.396 GiB, 6.49% gc time)
+```
