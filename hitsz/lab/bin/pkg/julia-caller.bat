@@ -124,7 +124,7 @@ echo         4. Newton
 echo         5. Gauss
 echo        -1. Exit
 echo:
-set num=-1
+set num=-999
 set /p num=LAB-DEMO# 
 if %num%==0 ( 
     echo:
