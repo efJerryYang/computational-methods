@@ -30,4 +30,4 @@
         reg add "HKCU\Console\%consoleName%" /f /v "FullScreen"              /t "REG_DWORD"  /d 0x00000001
     ) > nul
 
-    start "%consoleName%" /max "%~dp0src\julia-caller.bat"
+    start "%consoleName%" /max "%~dp0pkg\julia-caller.bat"

@@ -11,14 +11,26 @@
 该实验报告主要分为6个部分，大纲罗列如下：
 
 - **实验简介**：即本部分的所有内容
+
 - **数学原理**：即牛顿迭代法的数学推导和重根修正的牛顿迭代法的数学原理
+
 - **代码实现**：使用`Julia`语言，根据数学原理，编写实验代码
+
 - **实验题目**：实验指导书中所要求的进行求解的给定初值的非线性方程，给定求解精度和最大迭代次数后使用牛顿迭代法进行数值求解。各题目输出均打印了`Roots.jl`、`NLsolve.jl`和本人手写的牛顿法的结果，对比了所求的根的精度、求解耗时、迭代次数等，便于进一步分析。
-  - **执行代码**：本部分为对实验代码进行封装的部分，`get_func_diff()`是符号求导的预处理，`show_plot()`是根据函数作图的部分，`collect_data()`是汇总表格打印所需数据的部分，最后`show_result()`为外界直接调用的部分。
+
+  > 注：详细执行过程请参考**附录：执行代码**部分
+
   - **问题1**：本题为对简单的非线性方程进行求解的问题，直接调用`show_result()`进行调用即可。
   - **问题2**：探究直接采用牛顿法求解带有重根问题的缺陷，通过对比本题两小问求解的结果，加强对理论知识的认识，引出重根修正的牛顿迭代法的使用。同时因本人对比了标准的非线性系统求解库所得结果与手写牛顿法的结果，很容易确定所编写算法的正确性。
+
 - **思考题**：本部分为实验指导书中所要求完成的思考题解答
+
 - **参考资料**：本部分为实验过程中查阅的参考资料
+
+- **附录**：本实验的非主体部分
+
+  - **执行代码**：本部分为对实验代码进行封装的部分，`get_func_diff()`是符号求导的预处理，`show_plot()`是根据函数作图的部分，`collect_data()`是汇总表格打印所需数据的部分，最后`show_result()`为外界直接调用的部分。
+
 
 ### 数学原理
 
@@ -151,119 +163,6 @@ end
 实验指导书中所要求的进行求解的给定初值的非线性方程，给定求解精度和最大迭代次数后使用牛顿迭代法进行数值求解。
 
 各题目输出均打印了`Roots.jl`、`NLsolve.jl`和本人手写的牛顿法的结果，对比了所求的根的精度、求解耗时、迭代次数等，便于进一步分析。
-
-#### 执行代码
-
-本部分为对实验代码进行封装的部分，`get_func_diff()`是符号求导的预处理，`show_plot()`是根据函数作图的部分，`collect_data()`是汇总表格打印所需数据的部分，最后`show_result()`为外界直接调用的部分。
-
-##### preprocessing
-
-
-```julia
-function get_func_diff(symf::Sym)
-    @syms x
-    symdf = diff(symf)
-    f = lambdify(symf)
-    df = lambdify(symdf)
-    f, df
-end
-function get_func_diff(f::Function)
-    @syms x
-    symf = f(x)
-    symdf = diff(symf)
-    df = lambdify(symdf)
-    f, df
-end
-function redefine_func(f::Function, df::Function)
-    function f!(r, x)
-        r .= f.(x)
-    end
-    function j!(J, x)
-        (s1, s2) = size(J)
-        J .= zeros(s1, s1)
-        for i in 1:s1
-            J[i, i] = df(x[i])
-        end
-    end
-    f!, j!
-end
-function show_plots(f::Function, x0, title)
-    x = range(start=x0 - 0.5, stop=x0 + 0.5, length=100)
-    y = [f.(x), 0 .* x]
-    label = ["y=f(x)" "y=0"]
-    p = plot(f, label="y=f(x)", title=title, legend=:outertopright)
-    p = plot!([0], seriestype=:hline, label="y=0")
-    display(p)
-    p = plot(x, y, label=label, title=title, legend=:outertopright)
-    display(p)
-    p
-end
-function collect_data(f::Function, df::Function, f!::Function, j!::Function,
-    x0, ϵ1, ϵ2, N, λ)
-
-    t1 = @elapsed rs = fzeros(f, x0 - 0.5, x0 + 0.5)
-    r1 = rs[1]
-    i1 = NaN
-
-    t2 = @elapsed sol = nlsolve(f!, j!, [x0]; method=:newton, ftol=ϵ1, iterations=N)
-    r2 = sol.zero[1]
-    # println(sol)
-    i2 = sol.iterations[1]
-
-    t3 = @elapsed i3, r3 = newton(f, df, ϵ1, ϵ2, N, x0)
-    if λ > 1
-        t4 = @elapsed i4, r4 = newton(f, df, ϵ1, ϵ2, N, x0, λ)
-        xs = [r1, r2, r3, r4]
-        ts = [t1, t2, t3, t4]
-        is = [i1, i2, i3, i4]
-        method_name = ["lib Roots", "lib NLsolve", "my newton", "my newton (λ=$λ)"]
-        data = [method_name xs f.(xs) ts is]
-        return data
-    else
-        xs = [r1, r2, r3]
-        ts = [t1, t2, t3]
-        is = [i1, i2, i3]
-        method_name = ["lib Roots", "lib NLsolve", "my newton"]
-        data = [method_name xs f.(xs) ts is]
-        return data
-    end
-end
-```
-
-##### show_result
-
-
-```julia
-function show_result(f::Function, x0, ϵ1, ϵ2, N, title)
-    f, df = get_func_diff(f)
-    f!, j! = redefine_func(f, df)
-    show_plots(f, x0, L"~~~~~~~~~~" * title)
-
-    header = (["Method", "x", "f(x)", "Time Cost (s)", "Iter"])
-    data = collect_data(f, df, f!, j!, x0, ϵ1, ϵ2, N, 1)
-    pretty_table(
-        data;
-        alignment=[:c, :c, :c, :c, :c],
-        header=header,
-        header_crayon=crayon"bold"
-    )
-end
-function show_result(f::Function, x0, λ, ϵ1, ϵ2, N, title)
-    f, df = get_func_diff(f)
-    f!, j! = redefine_func(f, df)
-    show_plots(f, x0, L"~~~~~~~~~~" * title)
-
-    header = (["Method", "x", "f(x)", "Time Cost (s)", "Iter"])
-    data = collect_data(f, df, f!, j!, x0, ϵ1, ϵ2, N, λ)
-    pretty_table(
-        data;
-        alignment=[:c, :c, :c, :c, :c],
-        header=header,
-        header_crayon=crayon"bold"
-    )
-end
-```
-
 
 #### 问题 1
 
@@ -458,3 +357,116 @@ show_result(f, x0, λ, ϵ1, ϵ2, N, title)
 9. how to choose starting point https://math.stackexchange.com/questions/743373/how-to-choose-the-starting-point-in-newtons-method
 10. wikipedia newton fractal https://en.wikipedia.org/wiki/Newton_fractal
 11. How to find all roots of complex polynomials by Newton’s method https://link.springer.com/article/10.1007/s002220100149
+
+### 附录
+
+#### 执行代码
+
+本部分为对实验代码进行封装的部分，`get_func_diff()`是符号求导的预处理，`show_plot()`是根据函数作图的部分，`collect_data()`是汇总表格打印所需数据的部分，最后`show_result()`为外界直接调用的部分。
+
+##### preprocessing
+
+
+```julia
+function get_func_diff(symf::Sym)
+    @syms x
+    symdf = diff(symf)
+    f = lambdify(symf)
+    df = lambdify(symdf)
+    f, df
+end
+function get_func_diff(f::Function)
+    @syms x
+    symf = f(x)
+    symdf = diff(symf)
+    df = lambdify(symdf)
+    f, df
+end
+function redefine_func(f::Function, df::Function)
+    function f!(r, x)
+        r .= f.(x)
+    end
+    function j!(J, x)
+        (s1, s2) = size(J)
+        J .= zeros(s1, s1)
+        for i in 1:s1
+            J[i, i] = df(x[i])
+        end
+    end
+    f!, j!
+end
+function show_plots(f::Function, x0, title)
+    x = range(start=x0 - 0.5, stop=x0 + 0.5, length=100)
+    y = [f.(x), 0 .* x]
+    label = ["y=f(x)" "y=0"]
+    p = plot(f, label="y=f(x)", title=title, legend=:outertopright)
+    p = plot!([0], seriestype=:hline, label="y=0")
+    display(p)
+    p = plot(x, y, label=label, title=title, legend=:outertopright)
+    display(p)
+    p
+end
+function collect_data(f::Function, df::Function, f!::Function, j!::Function,
+    x0, ϵ1, ϵ2, N, λ)
+
+    t1 = @elapsed rs = fzeros(f, x0 - 0.5, x0 + 0.5)
+    r1 = rs[1]
+    i1 = NaN
+
+    t2 = @elapsed sol = nlsolve(f!, j!, [x0]; method=:newton, ftol=ϵ1, iterations=N)
+    r2 = sol.zero[1]
+    i2 = sol.iterations[1]
+
+    t3 = @elapsed i3, r3 = newton(f, df, ϵ1, ϵ2, N, x0)
+    if λ > 1
+        t4 = @elapsed i4, r4 = newton(f, df, ϵ1, ϵ2, N, x0, λ)
+        xs = [r1, r2, r3, r4]
+        ts = [t1, t2, t3, t4]
+        is = [i1, i2, i3, i4]
+        method_name = ["lib Roots", "lib NLsolve", "my newton", "my newton (λ=$λ)"]
+        data = [method_name xs f.(xs) ts is]
+        return data
+    else
+        xs = [r1, r2, r3]
+        ts = [t1, t2, t3]
+        is = [i1, i2, i3]
+        method_name = ["lib Roots", "lib NLsolve", "my newton"]
+        data = [method_name xs f.(xs) ts is]
+        return data
+    end
+end
+```
+
+##### show_result
+
+
+```julia
+function show_result(f::Function, x0, ϵ1, ϵ2, N, title)
+    f, df = get_func_diff(f)
+    f!, j! = redefine_func(f, df)
+    show_plots(f, x0, L"~~~~~~~~~~" * title)
+
+    header = (["Method", "x", "f(x)", "Time Cost (s)", "Iter"])
+    data = collect_data(f, df, f!, j!, x0, ϵ1, ϵ2, N, 1)
+    pretty_table(
+        data;
+        alignment=[:c, :c, :c, :c, :c],
+        header=header,
+        header_crayon=crayon"bold"
+    )
+end
+function show_result(f::Function, x0, λ, ϵ1, ϵ2, N, title)
+    f, df = get_func_diff(f)
+    f!, j! = redefine_func(f, df)
+    show_plots(f, x0, L"~~~~~~~~~~" * title)
+
+    header = (["Method", "x", "f(x)", "Time Cost (s)", "Iter"])
+    data = collect_data(f, df, f!, j!, x0, ϵ1, ϵ2, N, λ)
+    pretty_table(
+        data;
+        alignment=[:c, :c, :c, :c, :c],
+        header=header,
+        header_crayon=crayon"bold"
+    )
+end
+```

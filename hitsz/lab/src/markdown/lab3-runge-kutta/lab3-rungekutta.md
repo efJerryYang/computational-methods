@@ -13,16 +13,30 @@
 该实验报告主要分为7个部分，大纲罗列如下：
 
 - **实验简介**：即本部分的所有内容
+
 - **数学原理**：即常微分方程初值问题的数学定义，和对Runge-Kutta方法的基本数学原理进行阐述
+
 - **代码实现**：使用`Julia`语言，根据数学原理，编写实验代码
-- **测试代码**：对程序的运行、输出进行测试的部分
-  - Test 1 - Simple：使用教材上的例题对程序的正确性进行简单的测试，确保所写代码能完成实验任务。
+
 - **实验题目**：实验指导书中所要求的完成的实验题目，作有便于对照使用Runge-Kutta方法的`lib solver`和`my solver`与真实结果`true result`的曲线图，各题目均同时使用`lib solver`和`my solver`进行求解，熟悉了`Julia`库`DifferentcialEquations`求解`ODE`问题的使用流程。
-  - **执行代码**：本部分是实验代码进行运行时封装的部分，将函数的调用细节隐藏在`show_result()`函数内部，便于直接从外部使用特定参数对函数进行调用。
+
+  > 注：详细执行过程请参考**附录：执行代码**部分
+
   - **问题1**：探究数值解法与解析解的关系，通过对于解为线性函数和非线性函数的常微分方程的数值求解，体会求出的数值解用于反推解析解的困难程度。
   - **问题2**&**问题3**：探究n的大小对于求解精度的影响，首先是问题2变化的n对于求解精度的影响几乎可以不计，很容易求得精度较高的解，而在求解问题3时过小的n却根本无法对方程进行求解。这一定程度上说明了，求解的精度和n的选取很大程度上依赖于方程本身的性质。
+
 - **思考题**：本部分为实验指导书中所要求的完成的思考题解答
+
 - **参考资料**：本部分为完成实验过程中查阅的参考资料
+
+- **附录**：本实验的非主体部分
+
+  - **执行代码**：本部分是实验代码进行运行时封装的部分，将函数的调用细节隐藏在`show_result()`函数内部，便于直接从外部使用特定参数对函数进行调用。
+
+  - **测试代码**：对程序的运行、输出进行测试的部分
+
+    Test 1 - Simple：使用教材上的例题对程序的正确性进行简单的测试，确保所写代码能完成实验任务。
+
 
 ### 数学原理
 
@@ -43,10 +57,12 @@ K_2&=h\cdot f\left( x_n+\frac{h}{2},y_n+\frac{K_1}{2} \right)
 K_3&=h\cdot f\left( x_n+\frac{h}{2},y_n+\frac{K_2}{2} \right) 
 \\
 K_4&=h\cdot f\left( x_n+h,y_n+K_3 \right) 
-\\
-y_{n+1}&=y_n+\frac{1}{6}\left( K_1+2K_2+2K_3+K_4 \right) ,n=0,1,...,N-1
 \end{aligned}
 $$
+$$
+y_{n+1}=y_n+\frac{1}{6}\left( K_1+2K_2+2K_3+K_4 \right) ,n=0,1,...,N-1
+$$
+
 可以逐次求出微分方程初值问题的数值解$y_n,n=1,2,..,N$。
 
 ### 代码实现
@@ -89,130 +105,8 @@ function rungekutta(f::Function, xspan, y0, num)
 end
 ```
 
-### 测试代码
-
-这是一段从教材上选取的测试代码。
-
-待求微分方程为$\frac{\mathrm{d} y}{\mathrm{d} x}=y-\frac{2x}{y}$，解析解为抛物线$y^2=2x+1$，编写的`rungekutta()`函数进行数值求解时只求解了$y>0$的情形。
-
-除此以外，调用`DifferentialEquations.jl`库中经`ODEProblem()`返回类型重载了的`solve()`方法获得了更精确的数值解。
-
-因本部分仅做测试用，运行过程未经过封装，略显零乱，但考虑到与本实验问题求解并无直接关联，故未作更多修改。
-
-#### Test 1 - Simple
-
-
-```julia
-f(y, p, x) = y - 2x / y
-xspan = (0.0, 1.0)
-y0 = 1.0
-prob = ODEProblem(f, y0, xspan)
-alg = RK4()
-sol = solve(prob, alg, reltol=1e-8, abstol=1e-8)
-plot(title=L"~~~~~~~~~~~~ Problem:\ \frac{\mathrm{d} y}{\mathrm{d} x}=y-\frac{2x}{y}")
-plot!(sol.t, sol.u, seriestype=:scatter, markersize=3, msw=0, color=:red, label="lib solver")
-
-f(x, y) = y - 2x / y
-println("My Runge-Kutta Solver:")
-num = convert(Integer, 1.0 / 0.2)
-xs, ys = rungekutta(f, xspan, y0, 5)
-yt = .√(2 .* xs .+1)
-data = [xs yt ys]
-header = (["x","True y", "Pred y"])
-pretty_table(
-    data;
-    alignment=[:c, :c, :c],
-    header=header,
-    header_crayon=crayon"bold",
-    formatters=ft_printf("%14.8f"))
-p = plot!(xs, ys, seriestype=:scatter, markersize=5, msw=0, color=:green, label="my solver")
-
-f(x, y) = y^2 - 2x - 1
-p = plot!(f ⩵ 0.0, color=:green, linewidth=0.1, label="true result")  # \Equal[Tab]
-p = plot!(legend=:outertopright, xlim=(-0.51, 1.53), ylim=(-1.9, 1.9))
-x = xlims(p)[2]
-y = mean(ylims(p))
-ymax = ylims(p)[2]
-annotate!(x, y, L"y^2=2x+1", :black)
-display(p)
-```
-
-![svg](output_12_0.svg)
-
-
-```
-My Runge-Kutta Solver:
-┌────────────────┬────────────────┬────────────────┐
-│       x        │     True y     │     Pred y     │
-├────────────────┼────────────────┼────────────────┤
-│     0.20000000 │     1.18321596 │     1.18322929 │
-│     0.40000000 │     1.34164079 │     1.34166693 │
-│     0.60000000 │     1.48323970 │     1.48328146 │
-│     0.80000000 │     1.61245155 │     1.61251404 │
-│     1.00000000 │     1.73205081 │     1.73214188 │
-└────────────────┴────────────────┴────────────────┘
-```
 
 ### 实验题目
-
-#### 执行代码
-
-本部分代码用于将需要呈现的结果封装在一个`show_result()`函数中，作图时调用重载的三个作图函数`show_plot()`，分别绘制出`lib solver`，`my solver`和`true result`的图像，用于观察结果。在运行的循环中，打印出每次执行时的数据，以表格方式呈现。
-
-在本部分之后，是各个问题的逐一求解过程，因题目本身不带更多条件，为标准的常微分方程初值问题求解，故仅按部就班完成了代码的编写和求解，以及结果展示。
-
-为便于区分题目，所绘制的图像中给出了题目的微分方程和标准解的解析式，可供参考。考虑到图片整洁性的原因，略去对于x范围和初值的呈现，前者可直接从x轴范围看出，后者可从标准解的y坐标大致读出。
-
-
-```julia
-function show_plot(p, f::Function, tspan, u0::Float64, reltol, abstol, dense::Bool)
-    prob = ODEProblem(f, u0, tspan)
-    alg = RK4()
-    sol = solve(prob, alg, reltol=1e-8, abstol=1e-8)
-    if dense
-        p = plot!(sol, seriestype=:scatter, markersize=1, msw=0, color=:red, label="lib solver")
-    else
-        p = plot!(sol.t, sol.u, seriestype=:scatter, markersize=2, msw=0, color=:red, label="lib solver")
-    end
-    p, sol
-end
-function show_plot(p, f::Function, xspan, y0::Float64, iternum::Integer)
-    xs, ys = rungekutta(f, xspan, y0, iternum)
-    p = plot!(xs, ys, seriestype=:scatter, markersize=4, msw=0, color=:green, label="my solver")
-    p, xs, ys
-end
-function show_plot(p, f::Function, xs, show::Bool, text)
-    x = xlims(p)[2]
-    y = mean(ylims(p))
-    annotate!(x, y, text, :black)
-    if show
-        p = plot!(f, color=:blue, label="true result")
-    else
-        p = plot!(f, color=:blue, label="true result")
-    end
-    p, xs, f.(xs)
-end
-function show_result(f1::Function, f2::Function, f3::Function, xspan, y0, iternums, show::Bool, dense::Bool, title, text)
-    println("\n\n" * title)
-    for iternum in iternums
-        print("\nIternum: $iternum\n")
-        p = plot(legend=:outertopright, title=L"~~~~~~~~~~~~~~~~~~~~" * title)
-        p, sol = show_plot(p, f1, xspan, y0, 1e-8, 1e-8, dense)
-        p, xs, ys = show_plot(p, f2, xspan, y0, iternum)
-        p, xt, yt = show_plot(p, f3, xs, show, text)
-        data = [xt yt ys]
-        header = (["x", "True y", "Pred y"])
-        pretty_table(
-            data;
-            alignment=[:c, :c, :c],
-            header=header,
-            header_crayon=crayon"bold",
-            # tf = tf_markdown,
-            formatters=ft_printf("%14.8f"))
-        display(p)
-    end
-end
-```
 
 #### 问题 1
 
@@ -319,8 +213,6 @@ show_result(f1, f2, f3, xspan, y0, iternums, true, false, title, text) # show, d
         <img src="output_20_2.svg" style="zoom: 57%"/>
     </figure>
 </center>
-
-
 ```
 Iternum: 5
 ┌────────────────┬────────────────┬────────────────┐
@@ -375,8 +267,6 @@ Iternum: 20
 │     1.00000000 │     0.50000000 │     0.50000002 │
 └────────────────┴────────────────┴────────────────┘
 ```
-
-
 
 #### 问题 2
 
@@ -832,8 +722,6 @@ Iternum: 20
 └────────────────┴────────────────┴────────────────┘
 ```
 
-
-
 ### 思考题
 
 
@@ -923,3 +811,127 @@ Iternum: 20
 6. julia ode common solver option https://diffeq.sciml.ai/stable/basics/common_solver_opts/#solver_options
 
 7. 《计算方法实验指导》实验题目 3 四阶龙格—库塔(Runge—Kutta)方法
+
+### 附录
+
+#### 执行代码
+
+本部分代码用于将需要呈现的结果封装在一个`show_result()`函数中，作图时调用重载的三个作图函数`show_plot()`，分别绘制出`lib solver`，`my solver`和`true result`的图像，用于观察结果。在运行的循环中，打印出每次执行时的数据，以表格方式呈现。
+
+在本部分之后，是各个问题的逐一求解过程，因题目本身不带更多条件，为标准的常微分方程初值问题求解，故仅按部就班完成了代码的编写和求解，以及结果展示。
+
+为便于区分题目，所绘制的图像中给出了题目的微分方程和标准解的解析式，可供参考。考虑到图片整洁性的原因，略去对于x范围和初值的呈现，前者可直接从x轴范围看出，后者可从标准解的y坐标大致读出。
+
+
+```julia
+function show_plot(p, f::Function, tspan, u0::Float64, reltol, abstol, dense::Bool)
+    prob = ODEProblem(f, u0, tspan)
+    alg = RK4()
+    sol = solve(prob, alg, reltol=1e-8, abstol=1e-8)
+    if dense
+        p = plot!(sol, seriestype=:scatter, markersize=1, msw=0, color=:red, label="lib solver")
+    else
+        p = plot!(sol.t, sol.u, seriestype=:scatter, markersize=2, msw=0, color=:red, label="lib solver")
+    end
+    p, sol
+end
+function show_plot(p, f::Function, xspan, y0::Float64, iternum::Integer)
+    xs, ys = rungekutta(f, xspan, y0, iternum)
+    p = plot!(xs, ys, seriestype=:scatter, markersize=4, msw=0, color=:green, label="my solver")
+    p, xs, ys
+end
+function show_plot(p, f::Function, xs, show::Bool, text)
+    x = xlims(p)[2]
+    y = mean(ylims(p))
+    annotate!(x, y, text, :black)
+    if show
+        p = plot!(f, color=:blue, label="true result")
+    else
+        p = plot!(f, color=:blue, label="true result")
+    end
+    p, xs, f.(xs)
+end
+function show_result(f1::Function, f2::Function, f3::Function, xspan, y0, iternums, show::Bool, dense::Bool, title, text)
+    println("\n\n" * title)
+    for iternum in iternums
+        print("\nIternum: $iternum\n")
+        p = plot(legend=:outertopright, title=L"~~~~~~~~~~~~~~~~~~~~" * title)
+        p, sol = show_plot(p, f1, xspan, y0, 1e-8, 1e-8, dense)
+        p, xs, ys = show_plot(p, f2, xspan, y0, iternum)
+        p, xt, yt = show_plot(p, f3, xs, show, text)
+        data = [xt yt ys]
+        header = (["x", "True y", "Pred y"])
+        pretty_table(
+            data;
+            alignment=[:c, :c, :c],
+            header=header,
+            header_crayon=crayon"bold",
+            # tf = tf_markdown,
+            formatters=ft_printf("%14.8f"))
+        display(p)
+    end
+end
+```
+#### 测试代码
+
+这是一段从教材上选取的测试代码。
+
+待求微分方程为$\frac{\mathrm{d} y}{\mathrm{d} x}=y-\frac{2x}{y}$，解析解为抛物线$y^2=2x+1$，编写的`rungekutta()`函数进行数值求解时只求解了$y>0$的情形。
+
+除此以外，调用`DifferentialEquations.jl`库中经`ODEProblem()`返回类型重载了的`solve()`方法获得了更精确的数值解。
+
+因本部分仅做测试用，运行过程未经过封装，略显零乱，但考虑到与本实验问题求解并无直接关联，故未作更多修改。
+
+##### Test 1 - Simple
+
+
+```julia
+f(y, p, x) = y - 2x / y
+xspan = (0.0, 1.0)
+y0 = 1.0
+prob = ODEProblem(f, y0, xspan)
+alg = RK4()
+sol = solve(prob, alg, reltol=1e-8, abstol=1e-8)
+plot(title=L"~~~~~~~~~~~~ Problem:\ \frac{\mathrm{d} y}{\mathrm{d} x}=y-\frac{2x}{y}")
+plot!(sol.t, sol.u, seriestype=:scatter, markersize=3, msw=0, color=:red, label="lib solver")
+
+f(x, y) = y - 2x / y
+println("My Runge-Kutta Solver:")
+num = convert(Integer, 1.0 / 0.2)
+xs, ys = rungekutta(f, xspan, y0, 5)
+yt = .√(2 .* xs .+1)
+data = [xs yt ys]
+header = (["x","True y", "Pred y"])
+pretty_table(
+    data;
+    alignment=[:c, :c, :c],
+    header=header,
+    header_crayon=crayon"bold",
+    formatters=ft_printf("%14.8f"))
+p = plot!(xs, ys, seriestype=:scatter, markersize=5, msw=0, color=:green, label="my solver")
+
+f(x, y) = y^2 - 2x - 1
+p = plot!(f ⩵ 0.0, color=:green, linewidth=0.1, label="true result")  # \Equal[Tab]
+p = plot!(legend=:outertopright, xlim=(-0.51, 1.53), ylim=(-1.9, 1.9))
+x = xlims(p)[2]
+y = mean(ylims(p))
+ymax = ylims(p)[2]
+annotate!(x, y, L"y^2=2x+1", :black)
+display(p)
+```
+
+![svg](assets/output_12_0.svg)
+
+
+```
+My Runge-Kutta Solver:
+┌────────────────┬────────────────┬────────────────┐
+│       x        │     True y     │     Pred y     │
+├────────────────┼────────────────┼────────────────┤
+│     0.20000000 │     1.18321596 │     1.18322929 │
+│     0.40000000 │     1.34164079 │     1.34166693 │
+│     0.60000000 │     1.48323970 │     1.48328146 │
+│     0.80000000 │     1.61245155 │     1.61251404 │
+│     1.00000000 │     1.73205081 │     1.73214188 │
+└────────────────┴────────────────┴────────────────┘
+```

@@ -1,0 +1,11 @@
+prefix=/workspace/destdir
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libzstd
+Description: fast lossless compression algorithm library
+URL: http://www.zstd.net/
+Version: 1.5.2
+Libs: -L${libdir} -lzstd
+Libs.private: -pthread
+Cflags: -I${includedir}

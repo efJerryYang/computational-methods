@@ -11,17 +11,32 @@
 该实验报告主要分为7个部分，大纲罗列如下：
 
 - **实验简介**：即本部分的所有内容
+
 - **数学原理**：即高斯列主元消元法的数学问题定义和求解公式
+
 - **代码实现**：使用`Julia`语言，根据数学原理，编写实验代码
-- **测试代码**：对于程序基本的正确性、性能的测试代码
-  - Test 1 - Correctnesss：使用随机生成的高阶矩阵对程序的正确性进行基本的检验，使用`lib solver`与编写的高斯消元结果向量之差的范数来衡量结果的精确程度。
-  - Test 2 - Performance：首先是对各算法求解高阶线性方程组的时间消耗进行统计，然后绘制出方程组求解时间随矩阵阶数变化的折线图，注意横坐标并非阶数而是样本序号，样本从1阶矩阵到4000阶矩阵，每两个连续样本阶数之差为5。
+
 - **实验题目**：实验指导书中所要求的求解的线性方程组，以矩阵形式给出，各题目均将输入矩阵打印到控制台以便于观察，这之后同时提供`lib solver`和`my gauss solver`的解，二者结果精确到小数点后6位完全一致，说明求解正确。
-  - **执行代码**：本部分是实验代码进行运行时封装的部分，将函数的调用细节隐藏在show_result()函数内部，便于直接从外部使用特定参数对函数进行调用。
+
+  > 注：详细执行过程请参考**附录：执行代码**部分
+
   - **问题1**：此题结果实验指导书中已给出，均为`[1, 1, 1, 1]`，用于对算法正确性进行检查。
   - **问题2**：此题为线性方程组求解的问题，直接调用写好的求解函数`gauss()`即可。
+
 - **总结**：无思考题，此处对于本实验代码进行简单的总结，当前问题和后续的优化方向。
+
 - **参考资料**：本次实验过程中查阅的参考资料
+
+- **附录**：本实验的非主体部分
+
+  - **执行代码**：本部分是实验代码进行运行时封装的部分，将函数的调用细节隐藏在show_result()函数内部，便于直接从外部使用特定参数对函数进行调用。
+
+  - **测试代码**：对于程序基本的正确性、性能的测试代码
+
+    Test 1 - Correctnesss：使用随机生成的高阶矩阵对程序的正确性进行基本的检验，使用`lib solver`与编写的高斯消元结果向量之差的范数来衡量结果的精确程度。
+
+    Test 2 - Performance：首先是对各算法求解高阶线性方程组的时间消耗进行统计，然后绘制出方程组求解时间随矩阵阶数变化的折线图，注意横坐标并非阶数而是样本序号，样本从1阶矩阵到4000阶矩阵，每两个连续样本阶数之差为5。
+
 
 
 
@@ -106,6 +121,7 @@ function pivoting!(A::Matrix{Float64}, b::Vector{Float64}, k::Integer, n::Intege
         println("Cannot solve a singular matrix!")
         return
     end
+    
     if implicit
         val, idx = findmax(A[k:n, k] ./ s[1:n-k+1])
     else
@@ -154,9 +170,7 @@ function gauss(n, A::Matrix{Float64}, b::Vector{Float64})
     end
     x
 end
-
 ```
-
 
 #### explicit/implicit
 
@@ -196,206 +210,11 @@ function gauss(n, A::Matrix{Float64}, b::Vector{Float64}, implicit::Bool)
 end
 ```
 
-### 测试代码
-
-本部分为基本的测试代码，用于对代码的正确性和性能进行初步的检查
-
-#### Test 1 - Correctness
-
-使用随机生成的500阶矩阵对程序的正确性进行基本的检验，使用`lib solver`与三种`gauss solver`结果向量之差的范数来衡量结果的精确程度。
-
-使用的范数为2范数，计算范数的库函数为`norm()`，从计算结果来看，绝对误差大约在1e-10~1e-13数量级，可以认为结果相当的精确。
-
-```julia
-# random test
-for i in 1:5
-    M = rand(500, 500)
-    v = rand(500)
-    A, b = copy(M), copy(v)
-    try
-        # default gauss
-        @printf("[vector norm] absolute error: %10.6e\n", norm(A \ b - gauss(size(A, 1), A, b), 2))
-        # implicit=false
-        A, b = copy(M), copy(v) 
-        @printf("[vector norm] absolute error: %10.6e\n", norm(A \ b - gauss(size(A, 1), A, b, false), 2)) 
-        # implicit=true
-        A, b = copy(M), copy(v)
-        @printf("[vector norm] absolute error: %10.6e\n", norm(A \ b - gauss(size(A, 1), A, b, true), 2)) 
-    catch SigularException
-        @printf("Cannot solve a singular matrix!\n")
-    end
-    println()
-end
-```
-
-
-```
-    [vector norm] absolute error: 1.779781e-12
-    [vector norm] absolute error: 5.983915e-12
-    [vector norm] absolute error: 3.740373e-12
-    
-    [vector norm] absolute error: 2.707323e-12
-    [vector norm] absolute error: 6.508607e-12
-    [vector norm] absolute error: 5.296513e-12
-    
-    [vector norm] absolute error: 2.272272e-12
-    [vector norm] absolute error: 4.706284e-12
-    [vector norm] absolute error: 4.289481e-12
-    
-    [vector norm] absolute error: 2.581938e-11
-    [vector norm] absolute error: 1.179110e-11
-    [vector norm] absolute error: 6.608919e-12
-    
-    [vector norm] absolute error: 6.797016e-12
-    [vector norm] absolute error: 1.157560e-11
-    [vector norm] absolute error: 2.105902e-11
-```
-
-#### Test 2 - Performance 
-
-首先是对各算法求解500阶线性方程组的时间消耗进行统计，初步得出求解效率的比较结果。然后绘制出方程组求解时间随矩阵阶数变化的折线图，注意横坐标并非阶数而是样本序号，样本从1阶矩阵到4000阶矩阵，每两个连续样本阶数之差为5。
-
-很明显可以看到，求解高阶矩阵的效率有：`lib solver` >> `my gsolver` > `g implicit` > `g explicit`，显然内置库对于求解的优化远远超出了本人直接写下的高斯消元函数。
-
-从内存分配上看到库函数仅有的`4 allocations`，明显大大的减少了内存分配所消耗的时间，而手写的高斯消元法中间存在较多的不连续且频繁的内存分配导致时间被大量的消耗。
-
-
-```julia
-# random test
-for i in 1:5
-    M = rand(500, 500)
-    v = rand(500)
-    A, b = copy(M), copy(v)
-    try
-        @printf("lib solver: ")
-        @time A \ b
-        @printf("my gsolver: ")
-        A, b = copy(M), copy(v)
-        @time gauss(size(A, 1), A, b)
-        @printf("g explicit: ")
-        A, b = copy(M), copy(v)
-        @time gauss(size(A, 1), A, b, false)  # implicit=false
-        @printf("g implicit: ")
-        A, b = copy(M), copy(v)
-        @time gauss(size(A, 1), A, b, true)  # implicit=true
-    catch SigularException
-        println("Cannot solve a singular matrix!")
-    end
-    println()
-end
-```
-
-
-```
-    lib solver:   0.009829 seconds (4 allocations: 1.915 MiB)
-    my gsolver:   0.738466 seconds (500.50 k allocations: 1.936 GiB, 15.91% gc time)
-    g explicit:   1.210435 seconds (630.65 k allocations: 2.891 GiB, 13.71% gc time)
-    g implicit:   0.922749 seconds (628.74 k allocations: 2.268 GiB, 12.76% gc time)
-    
-    lib solver:   0.010037 seconds (4 allocations: 1.915 MiB)
-    my gsolver:   0.703981 seconds (500.50 k allocations: 1.936 GiB, 14.03% gc time)
-    g explicit:   1.219443 seconds (630.65 k allocations: 2.891 GiB, 13.59% gc time)
-    g implicit:   0.921236 seconds (628.74 k allocations: 2.268 GiB, 12.88% gc time)
-    
-    lib solver:   0.009741 seconds (4 allocations: 1.915 MiB)
-    my gsolver:   0.705588 seconds (500.50 k allocations: 1.936 GiB, 13.34% gc time)
-    g explicit:   1.201793 seconds (630.65 k allocations: 2.891 GiB, 12.86% gc time)
-    g implicit:   0.936341 seconds (628.74 k allocations: 2.268 GiB, 12.83% gc time)
-    
-    lib solver:   0.009751 seconds (4 allocations: 1.915 MiB)
-    my gsolver:   0.709221 seconds (500.50 k allocations: 1.936 GiB, 13.65% gc time)
-    g explicit:   1.194078 seconds (630.65 k allocations: 2.891 GiB, 13.66% gc time)
-    g implicit:   0.924525 seconds (628.74 k allocations: 2.268 GiB, 11.92% gc time)
-    
-    lib solver:   0.008812 seconds (4 allocations: 1.915 MiB)
-    my gsolver:   0.706725 seconds (500.50 k allocations: 1.936 GiB, 13.59% gc time)
-    g explicit:   1.175311 seconds (630.65 k allocations: 2.891 GiB, 12.84% gc time)
-    g implicit:   0.921059 seconds (628.74 k allocations: 2.268 GiB, 12.15% gc time)
-```
-接下来是绘制求解时间随矩阵阶数变化的折线图，横坐标是样本序号，样本从1阶矩阵到4000阶矩阵，每两个连续样本阶数之差为5。因本人手写的高斯消元效率过低，求解阶数大于500的矩阵耗时过长，故绘制图像时有所选择。时间单位为秒，包含了生成矩阵所消耗的时间和求解时间，生成矩阵耗时比库函数求解低一个数量级，故可不多作考虑。
-
-此处性能测试时间消耗过大，又因已经绘制了图像，故在`Jupyter Notebook`中均作注释处理。
-
-
-```julia
-iter = 1:5:4000
-x = [@elapsed(rand(i,i)\rand(i)) for i = iter]
-plot(x, label="lib solver", legend=:outertopright)
-```
-
-
-<center>
-    <figure>
-        <img src="output_19_0.svg" style="zoom: 100%"/>
-    </figure>
-</center>
-从下图中可以见得本人手写的高斯消元耗时远远超出了库函数解法，仅在阶数低于50（横坐标16附近）时大致能和`lib solver`耗时相当。
-
-
-```julia
-iter = 1:5:500
-x = [@elapsed(rand(i,i)\rand(i)) for i = iter]
-display(plot(x, label="lib solver", legend=:outertopright))
-x = [@elapsed(gauss(i, rand(i,i), rand(i))) for i = iter]
-plot!(x, label="my gsolver")
-x = [@elapsed(gauss(i, rand(i,i), rand(i), false)) for i = iter]
-plot!(x, label="g explicit")
-x = [@elapsed(gauss(i, rand(i,i), rand(i), true)) for i = iter]
-plot!(x, label="g implicit")
-```
-
-
-<center>
-    <figure>
-        <img src="output_21_0.svg" style="zoom: 57%"/>
-        <img src="output_21_1.svg" style="zoom: 57%"/>
-    </figure>
-</center>
 ### 实验题目
 
 实验指导书中所要求的求解的线性方程组，均以矩阵形式给出，各题目均将输入矩阵打印到控制台以便于观察，这之后同时提供`lib solver`和`my gauss solver`的解，二者结果精确到小数点后6位完全一致，说明求解正确。
 
 本部分在阶数较小的时候，意外的看到手写的`my gauss solver`效率高于`lib solver`，尽管如此，从上图曲线变化很明显可以注意到`lib solver`求解效率的稳定性。
-
-#### 执行代码
-
-本部分是实验代码进行运行时封装的部分，将函数的调用细节隐藏在show_result()函数内部，便于直接从外部使用特定参数对函数进行调用。
-
-
-```julia
-function show_result(A, b)
-    n = size(A, 1)
-    A = Float64.(A)
-    b = Float64.(b)
-    
-    println("input matrix: [A | b]")
-    data=[A repeat([|], inner=(n, 1)) b]
-    pretty_table(
-        data;
-        header_crayon=crayon"bold",
-        tf = tf_matrix,
-        noheader=true,
-        formatters=ft_printf("%11.8f"))
-    
-    println("lib solver result:")
-    pretty_table(
-        @time A \ b;
-        header_crayon=crayon"bold",
-        tf = tf_matrix,
-        noheader=true,
-        formatters=ft_printf("%11.8f"))
-    
-    println("my gauss solver result:")
-    pretty_table(
-        @time gauss(n, A, b);
-        header_crayon=crayon"bold",
-        tf = tf_matrix,
-        noheader=true,
-        formatters=ft_printf("%11.8f"))
-    # display(@time gauss(n, A, b, false))  # implicit=false
-    # display(@time gauss(n, A, b, true))  # implicit=true
-end
-```
 
 #### 问题 1
 
@@ -447,8 +266,6 @@ A = [136.01  90.860       0       0
 b = [226.87; 122.08; 110.68; 223.43]
 show_result(A, b)
 ```
-
-
 
     input matrix: [A | b]
     ┌                                                                         ┐
@@ -547,8 +364,6 @@ show_result(A, b)
     │  1.00000000 │
     │  1.00000000 │
     └             ┘
-
-
 
 #### 问题 2
 
@@ -692,8 +507,6 @@ show_result(A, b)
     │  1.00000000 │
     └             ┘
 
-
-
 ### 总结
 
 本实验为高斯列主元消元法的实现，以及运用所写代码完成问题的求解，同时熟悉了`Julia`语言的一些内置函数，以提高代码运行效率的细节用法，例如：
@@ -726,3 +539,201 @@ show_result(A, b)
 9. moving average https://stackoverflow.com/questions/12636613/how-to-calculate-moving-average-without-keeping-the-count-and-data-total
 10. 《数值分析原理》吴勃英 46-48
 11. 《计算方法实验指导》实验题目 5 高斯(Gauss)列主元消去法
+
+### 附录
+
+#### 执行代码
+
+本部分是实验代码进行运行时封装的部分，将函数的调用细节隐藏在show_result()函数内部，便于直接从外部使用特定参数对函数进行调用。
+
+
+```julia
+function show_result(A, b)
+    n = size(A, 1)
+    A = Float64.(A)
+    b = Float64.(b)
+    
+    println("input matrix: [A | b]")
+    data=[A repeat([|], inner=(n, 1)) b]
+    pretty_table(
+        data;
+        header_crayon=crayon"bold",
+        tf = tf_matrix,
+        noheader=true,
+        formatters=ft_printf("%11.8f"))
+    
+    println("lib solver result:")
+    pretty_table(
+        @time A \ b;
+        header_crayon=crayon"bold",
+        tf = tf_matrix,
+        noheader=true,
+        formatters=ft_printf("%11.8f"))
+    
+    println("my gauss solver result:")
+    pretty_table(
+        @time gauss(n, A, b);
+        header_crayon=crayon"bold",
+        tf = tf_matrix,
+        noheader=true,
+        formatters=ft_printf("%11.8f"))
+    # display(@time gauss(n, A, b, false))  # implicit=false
+    # display(@time gauss(n, A, b, true))  # implicit=true
+end
+```
+
+#### 测试代码
+
+本部分为基本的测试代码，用于对代码的正确性和性能进行初步的检查
+
+##### Test 1 - Correctness
+
+使用随机生成的500阶矩阵对程序的正确性进行基本的检验，使用`lib solver`与三种`gauss solver`结果向量之差的范数来衡量结果的精确程度。
+
+使用的范数为2范数，计算范数的库函数为`norm()`，从计算结果来看，绝对误差大约在1e-10~1e-13数量级，可以认为结果相当的精确。
+
+```julia
+# random test
+for i in 1:5
+    M = rand(500, 500)
+    v = rand(500)
+    A, b = copy(M), copy(v)
+    try
+        # default gauss
+        @printf("[vector norm] absolute error: %10.6e\n", norm(A \ b - gauss(size(A, 1), A, b), 2))
+        # implicit=false
+        A, b = copy(M), copy(v) 
+        @printf("[vector norm] absolute error: %10.6e\n", norm(A \ b - gauss(size(A, 1), A, b, false), 2)) 
+        # implicit=true
+        A, b = copy(M), copy(v)
+        @printf("[vector norm] absolute error: %10.6e\n", norm(A \ b - gauss(size(A, 1), A, b, true), 2)) 
+    catch SigularException
+        @printf("Cannot solve a singular matrix!\n")
+    end
+    println()
+end
+```
+
+
+```
+    [vector norm] absolute error: 1.779781e-12
+    [vector norm] absolute error: 5.983915e-12
+    [vector norm] absolute error: 3.740373e-12
+    
+    [vector norm] absolute error: 2.707323e-12
+    [vector norm] absolute error: 6.508607e-12
+    [vector norm] absolute error: 5.296513e-12
+    
+    [vector norm] absolute error: 2.272272e-12
+    [vector norm] absolute error: 4.706284e-12
+    [vector norm] absolute error: 4.289481e-12
+    
+    [vector norm] absolute error: 2.581938e-11
+    [vector norm] absolute error: 1.179110e-11
+    [vector norm] absolute error: 6.608919e-12
+    
+    [vector norm] absolute error: 6.797016e-12
+    [vector norm] absolute error: 1.157560e-11
+    [vector norm] absolute error: 2.105902e-11
+```
+
+##### Test 2 - Performance 
+
+首先是对各算法求解500阶线性方程组的时间消耗进行统计，初步得出求解效率的比较结果。然后绘制出方程组求解时间随矩阵阶数变化的折线图，注意横坐标并非阶数而是样本序号，样本从1阶矩阵到4000阶矩阵，每两个连续样本阶数之差为5。
+
+很明显可以看到，求解高阶矩阵的效率有：`lib solver` >> `my gsolver` > `g implicit` > `g explicit`，显然内置库对于求解的优化远远超出了本人直接写下的高斯消元函数。
+
+从内存分配上看到库函数仅有的`4 allocations`，明显大大的减少了内存分配所消耗的时间，而手写的高斯消元法中间存在较多的不连续且频繁的内存分配导致时间被大量的消耗。
+
+
+```julia
+# random test
+for i in 1:5
+    M = rand(500, 500)
+    v = rand(500)
+    A, b = copy(M), copy(v)
+    try
+        @printf("lib solver: ")
+        @time A \ b
+        @printf("my gsolver: ")
+        A, b = copy(M), copy(v)
+        @time gauss(size(A, 1), A, b)
+        @printf("g explicit: ")
+        A, b = copy(M), copy(v)
+        @time gauss(size(A, 1), A, b, false)  # implicit=false
+        @printf("g implicit: ")
+        A, b = copy(M), copy(v)
+        @time gauss(size(A, 1), A, b, true)  # implicit=true
+    catch SigularException
+        println("Cannot solve a singular matrix!")
+    end
+    println()
+end
+```
+
+
+```
+    lib solver:   0.009829 seconds (4 allocations: 1.915 MiB)
+    my gsolver:   0.738466 seconds (500.50 k allocations: 1.936 GiB, 15.91% gc time)
+    g explicit:   1.210435 seconds (630.65 k allocations: 2.891 GiB, 13.71% gc time)
+    g implicit:   0.922749 seconds (628.74 k allocations: 2.268 GiB, 12.76% gc time)
+    
+    lib solver:   0.010037 seconds (4 allocations: 1.915 MiB)
+    my gsolver:   0.703981 seconds (500.50 k allocations: 1.936 GiB, 14.03% gc time)
+    g explicit:   1.219443 seconds (630.65 k allocations: 2.891 GiB, 13.59% gc time)
+    g implicit:   0.921236 seconds (628.74 k allocations: 2.268 GiB, 12.88% gc time)
+    
+    lib solver:   0.009741 seconds (4 allocations: 1.915 MiB)
+    my gsolver:   0.705588 seconds (500.50 k allocations: 1.936 GiB, 13.34% gc time)
+    g explicit:   1.201793 seconds (630.65 k allocations: 2.891 GiB, 12.86% gc time)
+    g implicit:   0.936341 seconds (628.74 k allocations: 2.268 GiB, 12.83% gc time)
+    
+    lib solver:   0.009751 seconds (4 allocations: 1.915 MiB)
+    my gsolver:   0.709221 seconds (500.50 k allocations: 1.936 GiB, 13.65% gc time)
+    g explicit:   1.194078 seconds (630.65 k allocations: 2.891 GiB, 13.66% gc time)
+    g implicit:   0.924525 seconds (628.74 k allocations: 2.268 GiB, 11.92% gc time)
+    
+    lib solver:   0.008812 seconds (4 allocations: 1.915 MiB)
+    my gsolver:   0.706725 seconds (500.50 k allocations: 1.936 GiB, 13.59% gc time)
+    g explicit:   1.175311 seconds (630.65 k allocations: 2.891 GiB, 12.84% gc time)
+    g implicit:   0.921059 seconds (628.74 k allocations: 2.268 GiB, 12.15% gc time)
+```
+接下来是绘制求解时间随矩阵阶数变化的折线图，横坐标是样本序号，样本从1阶矩阵到4000阶矩阵，每两个连续样本阶数之差为5。因本人手写的高斯消元效率过低，求解阶数大于500的矩阵耗时过长，故绘制图像时有所选择。时间单位为秒，包含了生成矩阵所消耗的时间和求解时间，生成矩阵耗时比库函数求解低一个数量级，故可不多作考虑。
+
+此处性能测试时间消耗过大，又因已经绘制了图像，故在`Jupyter Notebook`中均作注释处理。
+
+
+```julia
+iter = 1:5:4000
+x = [@elapsed(rand(i,i)\rand(i)) for i = iter]
+plot(x, label="lib solver", legend=:outertopright)
+```
+
+
+<center>
+    <figure>
+        <img src="output_19_0.svg" style="zoom: 100%"/>
+    </figure>
+</center>
+从下图中可以见得本人手写的高斯消元耗时远远超出了库函数解法，仅在阶数低于50（横坐标16附近）时大致能和`lib solver`耗时相当。
+
+
+```julia
+iter = 1:5:500
+x = [@elapsed(rand(i,i)\rand(i)) for i = iter]
+display(plot(x, label="lib solver", legend=:outertopright))
+x = [@elapsed(gauss(i, rand(i,i), rand(i))) for i = iter]
+plot!(x, label="my gsolver")
+x = [@elapsed(gauss(i, rand(i,i), rand(i), false)) for i = iter]
+plot!(x, label="g explicit")
+x = [@elapsed(gauss(i, rand(i,i), rand(i), true)) for i = iter]
+plot!(x, label="g implicit")
+```
+
+
+<center>
+    <figure>
+        <img src="output_21_0.svg" style="zoom: 57%"/>
+        <img src="output_21_1.svg" style="zoom: 57%"/>
+    </figure>
+</center>

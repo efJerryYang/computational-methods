@@ -29,6 +29,9 @@ hitsz/lab/pkg/Juliawin-v1.7.0-0-full.exe
 hitsz/lab/src/sys_test_roots.so
 hitsz/lab/Juliawin-v1.7.0-0-full.exe
 hitsz/DemoExecutable.7z
+hitsz/DemoExecutable.zip
 hitsz/Demo/src/sys_test_roots.so
 hitsz/Demo/src/sys_test_prettytables.so
+hitsz/DemoExecutable/
+hitsz/DemoCompiled/lib/julia/sys.dll
 hitsz/DemoExecutable.zip
