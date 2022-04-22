@@ -75,7 +75,7 @@ $$
 l_j\left( x \right) =\frac{\left( x-x_0 \right) \left( x-x_1 \right) \cdots \left( x-x_{j-1} \right) \left( x-x_{j+1} \right) \cdots \left( x-x_n \right)}{\left( x_j-x_0 \right) \left( x_j-x_1 \right) \cdots \left( x_j-x_{j-1} \right) \left( x_j-x_{j+1} \right) \cdots \left( x_j-x_n \right)}, j=0,1,2,\cdots ,n. \ \ \ \left(**\right)
 $$
 
-综上所述,当$n$次多项式$l_j\left( x \right) \left( j=0,1,2,\cdots ,n \right) $由$\left(**\right($方程确定时,$n$次多项式满足插值条件式.可以证明,这样的多项式是唯一的.
+综上所述,当$n$次多项式$l_j\left( x \right) \left( j=0,1,2,\cdots ,n \right) $由$\left(**\right)$方程确定时,$n$次多项式满足插值条件式.可以证明,这样的多项式是唯一的.
 
 我们称式$\left(*\right)$为Lagrange插值公式,  $\left(**\right)$为Lagrange插值多项式,记为$L_n(x)$.
 
