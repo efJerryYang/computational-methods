@@ -35,3 +35,5 @@ hitsz/Demo/src/sys_test_prettytables.so
 hitsz/DemoExecutable/
 hitsz/DemoCompiled/lib/julia/sys.dll
 hitsz/DemoExecutable.zip
+hitsz/lab/bin.zip
+hitsz/lab/bin/pkg/lib/julia/sys.dll
