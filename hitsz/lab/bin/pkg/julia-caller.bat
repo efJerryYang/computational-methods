@@ -5,19 +5,17 @@ color f
 set juliapath=%~dp0bin\
 :copyright
 cls
+set path=%path%;C:\WINDOWS\system32;C:\WINDOWS
 chcp 65001
 echo:
 echo        Computational Method Lab Demo  Copyright (C) 2022  Jerry Yang
 echo:       
-echo        This program comes with ABSOLUTELY NO WARRANTY; 
-echo        for details type 'show -w'.
 echo:       
-echo        This is free software, and you are welcome to redistribute it under certain conditions;
-echo        type 'show -c' for details.
-echo:       
-echo        View the complete TERMS AND CONDITIONS, type 'show -t'
+echo        This program comes with ABSOLUTELY NO WARRANTY; for details type 'show -w'. This is free 
+echo        software, and you are welcome to redistribute it under certain conditions; type 'show -c' 
+echo        for details. View the complete TERMS AND CONDITIONS, type 'show -t'.
+echo        If you have any questions about the Lab Demo, please email me at efjerryyang@outlook.com.
 echo:
-echo        If you have any questions about the program, please email me at efjerryyang@outlook.com.
 echo:
 echo        Just for using the program, press [Enter] key to continue...
 echo:
@@ -185,7 +183,8 @@ if %num%==0 (
 
 :runall
 echo:
-echo    It really takes some time to compile the program at runtime...
+echo    It really takes some time to compile the program at runtime, especially the lab1-lagrange and 
+echo    lab4-newton because of some packages used in their source code.
 echo:
 call "%juliapath%Demo.exe" -a
 echo:
