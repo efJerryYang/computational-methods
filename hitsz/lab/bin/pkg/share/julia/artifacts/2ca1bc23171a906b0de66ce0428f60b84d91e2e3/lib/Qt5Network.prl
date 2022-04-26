@@ -1,5 +1,0 @@
-QMAKE_PRL_BUILD_DIR = /workspace/srcdir/build/src/network
-QMAKE_PRO_INPUT = network.pro
-QMAKE_PRL_TARGET = libQt5Network.a
-QMAKE_PRL_CONFIG = lex yacc debug depend_includepath testcase_targets import_plugins import_qpa_plugin windows prepare_docs qt_docs_targets qt_build_extra file_copies qmake_use qt warn_on link_prl debug_and_release precompile_header shared cross_compile shared no_plugin_manifest win32 mingw gcc cross_compile sse2 aesni sse3 ssse3 sse4_1 sse4_2 compile_examples largefile precompile_header rdrnd shani x86SimdAlways prefix_build force_independent force_bootstrap utf8_source create_prl link_prl no_private_qt_headers_warning QTDIR_build qt_example_installs exceptions_off testcase_exceptions warning_clean debug DebugBuild Debug build_pass generated_privates relative_qt_rpath target_qt c++11 strict_c++ c++14 c++1z c99 c11 split_incpath qt_install_headers need_fwd_pri qt_install_module create_cmake skip_target_version_ext compiler_supports_fpmath create_pc debug DebugBuild Debug build_pass have_target dll no_plist exclusive_builds debug_info no_autoqmake thread moc resources
-QMAKE_PRL_VERSION = 5.15.2
